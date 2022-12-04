@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: translation-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: translation-bot
+  template:
+    spec:
+      containers:
+        - name: translation-bot
+          image: {{ .Values.image }}
+      restartPolicy: Always

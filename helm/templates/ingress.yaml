@@ -1,0 +1,21 @@
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: translation-bot
+  labels:
+    ingress: translation-bot
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingressClass }}
+spec:
+  rules:
+    - host: translation-bot.bbenetti.ca
+      http:
+        paths:
+          - backend:
+              service:
+                name: translation-bot
+                port:
+                  name: web
+            pathType: ImplementationSpecific
+            path: /
