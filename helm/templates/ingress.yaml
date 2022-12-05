@@ -9,7 +9,7 @@ metadata:
     kubernetes.io/ingress.class: {{ .Values.ingressClass }}
 spec:
   rules:
-    - host: translation-bot.bbenetti.ca
+    - host: {{ .Values.hostname }}
       http:
         paths:
           - backend:

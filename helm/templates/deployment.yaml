@@ -8,8 +8,16 @@ spec:
     matchLabels:
       app: translation-bot
   template:
+    metadata:
+      labels:
+        app: translation-bot
     spec:
+      imagePullSecrets:
+        - name: regcred
       containers:
         - name: translation-bot
+          env:
+            - name: GIN_MODE
+              value: release
           image: {{ .Values.image }}
       restartPolicy: Always

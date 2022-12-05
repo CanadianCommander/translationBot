@@ -1,3 +1,4 @@
 
-image: translation-bot
-ingressClass: nginx
+hostname: translation-bot.apps.cluster.bbenetti.ca
+image: ghcr.io/canadiancommander/trasnlation-bot:latest
+ingressClass: haproxy
