@@ -1,0 +1,17 @@
+
+name: Release to production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-image:
+    name: Build Image
+    uses: ./github/workflows/lib-build-image.yaml
+    with:
+      docker-file: ./Dockerfile
+      image-name: ghcr.io/canadiancommander/trasnlation-bot
+      tag: latest
+      registry: ghcr.io
+

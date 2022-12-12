@@ -19,5 +19,9 @@ spec:
           env:
             - name: GIN_MODE
               value: release
+          envFrom:
+            - secretRef:
+                name: "translation-bot-secrets"
           image: {{ .Values.image }}
+          imagePullPolicy: IfNotPresent
       restartPolicy: Always

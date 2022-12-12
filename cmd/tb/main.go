@@ -2,16 +2,18 @@ package main
 
 import (
 	"fmt"
+	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"os"
 )
 import "github.com/CanadianCommander/translationBot/internal/api"
 
 func main() {
+	log.InitializeLogging()
 	fmt.Println(bootUpMessage())
 
 	err := api.BuildV1Api().Run(":8080")
 	if err != nil {
-		fmt.Println("Failed to startup TranslationBot :(")
+		log.Logger.Error("Failed to startup TranslationBot :(")
 		os.Exit(1)
 	}
 }

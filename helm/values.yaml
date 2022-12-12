@@ -2,3 +2,6 @@
 hostname: translation-bot.apps.cluster.bbenetti.ca
 image: ghcr.io/canadiancommander/trasnlation-bot:latest
 ingressClass: haproxy
+
+secrets:
+  SLACK_SIGNING_KEY: <override me>
