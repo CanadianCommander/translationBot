@@ -23,5 +23,5 @@ spec:
             - secretRef:
                 name: "translation-bot-secrets"
           image: {{ .Values.image }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
       restartPolicy: Always

@@ -1,0 +1,22 @@
+# Build docker images and push to a registry
+name: Build Image
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: GitHub Environment
+        required: true
+        type: string
+      image-name:
+        description: Full name of the image to build
+        required: true
+        type: string
+      cluster-hostname:
+        description: Hostname of the cluster
+        required: true
+        type: string
+    secrets:
+      SA_TOKEN:
+        description: service account access token
+        required: true
