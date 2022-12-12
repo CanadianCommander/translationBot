@@ -11,7 +11,7 @@ jobs:
     uses: ./.github/workflows/lib-build-image.yaml
     with:
       docker-file: ./Dockerfile
-      image-name: ghcr.io/canadiancommander/trasnlation-bot
+      image-name: trasnlation-bot
       tag: latest
-      registry: ghcr.io
+      registry: ghcr.io/canadiancommander
 
