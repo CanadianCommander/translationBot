@@ -4,7 +4,7 @@ RUN mkdir /var/source
 WORKDIR /var/source
 
 COPY . /var/source
-RUN go build ./slashcmd/tb
+RUN go build ./cmd/tb
 
 FROM golang:1.18-alpine AS phase-1
 
