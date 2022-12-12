@@ -8,7 +8,7 @@ on:
 jobs:
   build-image:
     name: Build Image
-    uses: ./github/workflows/lib-build-image.yaml
+    uses: ./.github/workflows/lib-build-image.yaml
     with:
       docker-file: ./Dockerfile
       image-name: ghcr.io/canadiancommander/trasnlation-bot
