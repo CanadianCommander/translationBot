@@ -27,7 +27,7 @@ jobs:
     uses: ./.github/workflows/lib-build-image.yaml
     with:
       docker-file: ./Dockerfile
-      image-name: trasnlation-bot
+      image-name: translation-bot
       tag: ${{ needs.determine-tag.outputs.tag }}
       registry: ghcr.io/canadiancommander
 

@@ -53,6 +53,6 @@ jobs:
           --install \
           --namespace translation-bot \
           --create-namespace \
-          --set image=ghcr.io/canadiancommander/trasnlation-bot:${{ inputs.image-tag }} \
+          --set image=ghcr.io/canadiancommander/translation-bot:${{ inputs.image-tag }} \
           --set secrets.SLACK_SIGNING_KEY=${{ secrets.SLACK_SIGNING_KEY }} \
           tb ./kubernetes/helm/
