@@ -49,5 +49,5 @@ jobs:
           --install \
           --namespace translation-bot \
           --create-namespace \
-          --set secrets.SLACK_SIGNING_KEY=${{ secrets.SLACK_SIGNING_KEY }}
+          --set secrets.SLACK_SIGNING_KEY=${{ secrets.SLACK_SIGNING_KEY }} \
           tb ./kubernetes/helm/
