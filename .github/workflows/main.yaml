@@ -39,6 +39,7 @@ jobs:
     uses: ./.github/workflows/lib-deploy-to-cluster.yaml
     with:
       environment: prod
+      image-tag: ${{ needs.determine-tag.outputs.tag }}
       cluster-url: https://api.cluster.bbenetti.ca:8441
     secrets:
       SA_TOKEN: ${{ secrets.SA_TOKEN }}
