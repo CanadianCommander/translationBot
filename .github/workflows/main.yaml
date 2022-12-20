@@ -16,6 +16,8 @@ jobs:
       registry: ghcr.io/canadiancommander
   deploy:
     name: Deploy to Cluster
+    needs:
+      - build-image
     uses: ./.github/workflows/lib-deploy-to-cluster.yaml
     with:
       environment: prod
