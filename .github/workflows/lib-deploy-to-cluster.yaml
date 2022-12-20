@@ -8,6 +8,10 @@ on:
         description: GitHub Environment
         required: true
         type: string
+      image-tag:
+        description: Image tag to release
+        required: true
+        type: string
       cluster-url:
         description: Hostname of the cluster
         required: true
@@ -49,5 +53,6 @@ jobs:
           --install \
           --namespace translation-bot \
           --create-namespace \
+          --set ghcr.io/canadiancommander/trasnlation-bot:${{ inputs.image-tag }} \
           --set secrets.SLACK_SIGNING_KEY=${{ secrets.SLACK_SIGNING_KEY }} \
           tb ./kubernetes/helm/
