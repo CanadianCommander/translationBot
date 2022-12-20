@@ -1,5 +1,5 @@
-# Build docker images and push to a registry
-name: Build Image
+# Deploy translation bot!
+name: Deploy Translation Bot
 
 on:
   workflow_call:
@@ -8,11 +8,7 @@ on:
         description: GitHub Environment
         required: true
         type: string
-      image-name:
-        description: Full name of the image to build
-        required: true
-        type: string
-      cluster-hostname:
+      cluster-url:
         description: Hostname of the cluster
         required: true
         type: string
@@ -20,3 +16,38 @@ on:
       SA_TOKEN:
         description: service account access token
         required: true
+      SLACK_SIGNING_KEY:
+        description: Key used by slack when communicating with translation bot. Allows us to verify the message.
+        required: true
+
+jobs:
+
+  deploy:
+    name: Deploy To Cluster
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Install Helm
+        shell: bash
+        run: curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+      - name: Login to Cluster
+        uses: azure/k8s-set-context@v2
+        with:
+          method: service-account
+          k8s-url: ${{ inputs.cluster-url }}
+          k8s-secret: ${{ secrets.SA_TOKEN }}
+
+      - name: Deploy helm chart
+        shell: bash
+        run: |
+          helm upgrade \
+          --install \
+          --namespace translation-bot \
+          --create-namespace \
+          --set secrets.SLACK_SIGNING_KEY=${{ secrets.SLACK_SIGNING_KEY }}
+          tb ./kubernetes/helm/

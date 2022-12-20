@@ -14,4 +14,13 @@ jobs:
       image-name: trasnlation-bot
       tag: latest
       registry: ghcr.io/canadiancommander
+  deploy:
+    name: Deploy to Cluster
+    uses: ./.github/workflows/lib-deploy-to-cluster.yaml
+    with:
+      environment: prod
+      cluster-url: https://api.cluster.bbenetti.ca:8441
+    secrets:
+      SA_TOKEN: ${{ secrets.SA_TOKEN }}
+      SLACK_SIGNING_KEY: ${{ secrets.SLACK_SIGNING_KEY }}
 
