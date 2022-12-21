@@ -15,7 +15,7 @@ import (
 // Validates that an incoming request is really from slack.
 // This method panics if the request did not come from slack servers.
 func ValidateSlackRequest(gin *gin.Context) {
-	config := configuration.Load()
+	config := configuration.Get()
 
 	sv, secretErr := slack.NewSecretsVerifier(gin.Request.Header, config.SlackSigningSecret)
 	body, readErr := ioutil.ReadAll(gin.Request.Body)
