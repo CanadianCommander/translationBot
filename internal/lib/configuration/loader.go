@@ -28,5 +28,5 @@ func loadSettings() *Settings {
 
 		return &settings
 	}
-	panic("Config file doesnt exist. Freak out!")
+	panic("Config file doesnt exist. Freak out! Please make sure it exists and is at path ./config/config.yaml")
 }
