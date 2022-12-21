@@ -19,9 +19,14 @@ spec:
           env:
             - name: GIN_MODE
               value: release
-          envFrom:
-            - secretRef:
-                name: "translation-bot-secrets"
           image: {{ .Values.image }}
           imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: "/var/source/config/"
+              name: translation-bot-secrets
+              readOnly: true
+      volumes:
+        - name: translation-bot-secrets
+          secret:
+            secretName: "translation-bot-secrets"
       restartPolicy: Always

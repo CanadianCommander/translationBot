@@ -1,5 +1,7 @@
 package configuration
 
 type Settings struct {
-	SlackSigningSecret string
+	SlackSigningSecret string `yaml:"slackSigningSecret"`
+
+	Projects []Project
 }
