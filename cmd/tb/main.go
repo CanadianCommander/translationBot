@@ -3,12 +3,15 @@ package main
 import (
 	"fmt"
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
+	"github.com/CanadianCommander/translationBot/internal/lib/slackutil"
 	"os"
 )
 import "github.com/CanadianCommander/translationBot/internal/api"
 
 func main() {
 	log.InitializeLogging()
+	slackutil.InitializeApi()
+
 	fmt.Println(bootUpMessage())
 
 	err := api.BuildV1Api().Run(":8080")

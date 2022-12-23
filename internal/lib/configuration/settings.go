@@ -1,6 +1,7 @@
 package configuration
 
 type Settings struct {
+	SlackClientSecret  string `yaml:"slackClientSecret"`
 	SlackSigningSecret string `yaml:"slackSigningSecret"`
 
 	// what project should translation bot operate on if no project is specified in user command
