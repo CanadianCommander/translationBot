@@ -1,6 +1,7 @@
 package slashcmd
 
 import (
+	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"github.com/CanadianCommander/translationBot/internal/lib/ui"
 	"github.com/slack-go/slack"
 )
@@ -20,6 +21,8 @@ var handlers = []handler{
 
 // DispatchCommand to the appropriate handler and return the response from that handler
 func DispatchCommand(slashCommand slack.SlashCommand) slack.Message {
+	log.Logger.Infof("Processing Slash Command %s", slashCommand.Text)
+
 	for _, handler := range handlers {
 		if handler.Cmd == slashCommand.Text {
 			return handler.Handler(slashCommand)

@@ -3,6 +3,7 @@ package configuration
 type Project struct {
 	Name        string
 	Url         string
+	Branch      string
 	GithubToken string `yaml:"githubToken"`
 
 	// translation file mappings.

@@ -1,4 +1,4 @@
-package slashcmd
+package api
 
 import (
 	"github.com/CanadianCommander/translationBot/internal/lib/slashcmd"
@@ -7,7 +7,12 @@ import (
 	"net/http"
 )
 
-func SlashCommand(gin *gin.Context) {
+//==========================================================================
+// Public
+//==========================================================================
+
+// SlackSlashCommandHandler - POST
+func SlackSlashCommandHandler(gin *gin.Context) {
 
 	slashCommand, err := slack.SlashCommandParse(gin.Request)
 	if err != nil {
