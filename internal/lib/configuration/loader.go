@@ -1,6 +1,7 @@
 package configuration
 
 import (
+	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"gopkg.in/yaml.v2"
 	"os"
 )
@@ -13,6 +14,8 @@ const configFilePath = "./config/config.yaml"
 
 // loadSettings from the configuration file.
 func loadSettings() *Settings {
+	log.Logger.Infof("Loading configuration file %s", configFilePath)
+
 	fileInfo, err := os.Stat(configFilePath)
 	if fileInfo != nil || err != nil {
 		configYaml, err := os.ReadFile(configFilePath)
@@ -26,6 +29,7 @@ func loadSettings() *Settings {
 			panic(err)
 		}
 
+		log.Logger.Info("Configuration loaded")
 		return &settings
 	}
 	panic("Config file doesnt exist. Freak out! Please make sure it exists and is at path ./config/config.yaml")
