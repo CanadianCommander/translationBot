@@ -27,8 +27,7 @@ func (c *CsvTaraMappingLoader) IsMimeSupported(mimetype string) bool {
 		return false
 	}
 
-	csvMime, _, _ := mime.ParseMediaType(mime.TypeByExtension(".csv"))
-	return parsedMime == csvMime
+	return parsedMime == "text/csv"
 }
 
 func (c *CsvTaraMappingLoader) IsFileSupported(fileDataStart []byte) bool {
