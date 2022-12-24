@@ -23,6 +23,9 @@ on:
       SLACK_SIGNING_KEY:
         description: Key used by slack when communicating with translation bot. Allows us to verify the message.
         required: true
+      SLACK_CLIENT_SECRET:
+        description: Slack bot client secret. Used to interact with the slack API
+        required: true
 
 jobs:
 
@@ -54,5 +57,6 @@ jobs:
           --namespace translation-bot \
           --create-namespace \
           --set image=ghcr.io/canadiancommander/translation-bot:${{ inputs.image-tag }} \
-          --set secrets.SLACK_SIGNING_KEY=${{ secrets.SLACK_SIGNING_KEY }} \
+          --set secrets.slackSigningKey=${{ secrets.SLACK_SIGNING_KEY }} \
+          --set secrets.slackClientSecret=${{ secrets.SLACK_CLIENT_SECRET }} \
           tb ./kubernetes/helm/
