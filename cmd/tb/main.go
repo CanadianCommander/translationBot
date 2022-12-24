@@ -9,10 +9,10 @@ import (
 import "github.com/CanadianCommander/translationBot/internal/api"
 
 func main() {
+	fmt.Println(bootUpMessage())
+
 	log.InitializeLogging()
 	slackutil.InitializeApi()
-
-	fmt.Println(bootUpMessage())
 
 	err := api.BuildV1Api().Run(":8080")
 	if err != nil {

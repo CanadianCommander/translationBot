@@ -25,6 +25,7 @@ func GetMapperForSlackFile(fileId string) (MappingLoader, error) {
 		return nil, err
 	}
 
+	log.Logger.Infof("Searching for loader to handle %s file.", fileInfo.Mimetype)
 	for _, loader := range mappers {
 		if loader.IsMimeSupported(fileInfo.Mimetype) {
 			match, err := checkFileMagic(loader, fileInfo)
