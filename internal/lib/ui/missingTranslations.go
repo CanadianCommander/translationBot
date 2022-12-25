@@ -15,8 +15,7 @@ import (
 // #### params
 // missingTranslations - a list of translations missing values for one or more languages
 func MissingTranslations(missingTranslations []translation.Translation) slack.Message {
-
-	return slack.NewBlockMessage(
+	blocks := []slack.Block{
 		slack.NewHeaderBlock(slackutil.NewTextBlock("Missing translations")),
 		slack.NewSectionBlock(
 			slackutil.NewTextBlock("The following sections detail the missing translations for each language."+
@@ -25,11 +24,10 @@ func MissingTranslations(missingTranslations []translation.Translation) slack.Me
 			nil,
 			nil),
 		slack.NewDividerBlock(),
-		slack.NewSectionBlock(
-			slackutil.NewMarkdownTextBlock(getMissingTranslationOutputForLangs(missingTranslations)),
-			nil,
-			nil),
-	)
+	}
+	blocks = append(blocks, getMissingTranslationOutputForLangs(missingTranslations)...)
+
+	return slack.NewBlockMessage(blocks...)
 }
 
 //==========================================================================
@@ -37,7 +35,7 @@ func MissingTranslations(missingTranslations []translation.Translation) slack.Me
 //==========================================================================
 
 // getMissingTranslationOutputForLangs gets missing translation string output messages by language
-func getMissingTranslationOutputForLangs(missingTranslations []translation.Translation) string {
+func getMissingTranslationOutputForLangs(missingTranslations []translation.Translation) []slack.Block {
 	// lang -> output text
 	missingTranslationOutput := make(map[string]string)
 
@@ -54,13 +52,26 @@ func getMissingTranslationOutputForLangs(missingTranslations []translation.Trans
 		}
 	}
 
-	output := ""
+	var outputBlocks []slack.Block
 	for lang, out := range missingTranslationOutput {
-		output += fmt.Sprintf("\n*%s*\n```%s```", lang, out)
+		outputBlocks = append(outputBlocks, buildLanguageMissingTranslationBlocks(lang, out)...)
 	}
-	return output
+	return outputBlocks
 }
 
+func buildLanguageMissingTranslationBlocks(language string, missingTranslations string) []slack.Block {
+	return []slack.Block{
+		slack.NewHeaderBlock(slackutil.NewTextBlock(language)),
+		slack.NewSectionBlock(
+			slackutil.NewMarkdownTextBlock(fmt.Sprintf("```%s\n```", missingTranslations)),
+			nil,
+			nil),
+	}
+}
+
+// formatMissingTranslationLine formats a single line of missing translation output
+// #### params
+// translation - the translation to output the missing line for
 func formatMissingTranslationLine(translation *translation.Translation) string {
 	return fmt.Sprintf("\n%s \"%s\"", translation.Key, translation.SourceValue)
 }
