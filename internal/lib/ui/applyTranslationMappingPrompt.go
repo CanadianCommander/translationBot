@@ -1,8 +1,8 @@
 package ui
 
 import (
-	"github.com/CanadianCommander/translationBot/internal/lib/actions"
 	"github.com/CanadianCommander/translationBot/internal/lib/configuration"
+	"github.com/CanadianCommander/translationBot/internal/lib/routes"
 	"github.com/CanadianCommander/translationBot/internal/lib/slackutil"
 	"github.com/slack-go/slack"
 )
@@ -27,7 +27,7 @@ func ApplyTranslationMappingsPrompt(fileId string) slack.Message {
 		slack.NewActionBlock(
 			"actions",
 			slack.NewButtonBlockElement(
-				actions.UpdateTranslationsActionId,
+				routes.ActionUpdateTranslations,
 				fileId,
 				slackutil.NewTextBlock("Update")),
 		),

@@ -13,6 +13,7 @@ func BuildV1Api() *gin.Engine {
 	v1.Use(security.ValidateSlackRequest)
 	v1.POST("/cmd/", SlackSlashCommandHandler)
 	v1.POST("/event/", SlackEventHandler)
+	v1.POST("/action/", SlackActionHandler)
 
 	return router
 }

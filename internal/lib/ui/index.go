@@ -2,6 +2,8 @@ package ui
 
 import (
 	"fmt"
+	"github.com/CanadianCommander/translationBot/internal/lib/configuration"
+	"github.com/CanadianCommander/translationBot/internal/lib/routes"
 	"github.com/CanadianCommander/translationBot/internal/lib/slackutil"
 	"github.com/slack-go/slack"
 )
@@ -11,6 +13,7 @@ import (
 //==========================================================================
 
 func Index() slack.Message {
+	config := configuration.Get()
 
 	return slack.NewBlockMessage(
 		slack.NewHeaderBlock(slack.NewTextBlockObject("plain_text", "Translation Bot :robot_face:", true, false)),
@@ -19,11 +22,16 @@ func Index() slack.Message {
 			nil,
 			nil),
 		slack.NewDividerBlock(),
-		commandOptionHelpButton("missing <en|fr>", "show a list of missing translations", true, "TODO", "Run", "fr"),
+		commandOptionHelpButton("missing",
+			"show a list of missing translations",
+			true,
+			routes.ActionListMissingTranslations,
+			"Run",
+			config.DefaultProject),
 		commandOptionHelpButton("upload", "Upload a new translation file (CSV). \n"+
 			"I can also automatically detect translations files uploaded to slack :wink: Try uploading one in this channel.",
 			true,
-			"TODO",
+			"FOOOOOBAR",
 			"Run",
 			""),
 	)

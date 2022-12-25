@@ -1,7 +1,11 @@
 package actions
 
+import "github.com/slack-go/slack"
+
 //==========================================================================
 // Public
 //==========================================================================
 
-const UpdateTranslationsActionId = "UpdateTranslations"
+func UpdateTranslations(action *slack.InteractionCallback) error {
+	return nil
+}
