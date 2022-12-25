@@ -2,7 +2,9 @@ package events
 
 import (
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
+	"github.com/CanadianCommander/translationBot/internal/lib/slackutil"
 	"github.com/CanadianCommander/translationBot/internal/lib/translationMapping"
+	"github.com/CanadianCommander/translationBot/internal/lib/ui"
 	"github.com/slack-go/slack/slackevents"
 )
 
@@ -21,6 +23,12 @@ func OnFileShared(event *slackevents.FileSharedEvent) {
 
 	if loader != nil {
 		log.Logger.Infof("File looks like translation mapping file! Matches loader %s", loader.GetLoaderType())
+		_, _, err := slackutil.Api.PostMessage(
+			event.ChannelID,
+			slackutil.SlackMessageToMsgOption(ui.ApplyTranslationMappingsPrompt(event.FileID)))
+		if err != nil {
+			log.Logger.Error("Unexpected error posting translation mapping prompt to slack ", err)
+		}
 	} else {
 		log.Logger.Info("File doesn't look like translation mapping file. Ignoring")
 	}

@@ -5,7 +5,7 @@ type Settings struct {
 	SlackSigningSecret string `yaml:"slackSigningSecret"`
 
 	// what project should translation bot operate on if no project is specified in user command
-	defaultProject string `yaml:"defaultProject"`
+	DefaultProject string `yaml:"defaultProject"`
 	// projects on which translation bot can operate
-	Projects []Project
+	Projects map[string]Project
 }

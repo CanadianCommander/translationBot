@@ -2,6 +2,10 @@ package ui
 
 import "github.com/slack-go/slack"
 
+//==========================================================================
+// Public
+//==========================================================================
+
 // NotFound is a catch-all page that shows when the appropriate page is not found
 func NotFound() slack.Message {
 

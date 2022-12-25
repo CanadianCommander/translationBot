@@ -23,11 +23,10 @@ var handlers = []handler{
 func DispatchCommand(slashCommand slack.SlashCommand) slack.Message {
 	log.Logger.Infof("Processing Slash Command %s", slashCommand.Text)
 
-	for _, handler := range handlers {
-		if handler.Cmd == slashCommand.Text {
-			return handler.Handler(slashCommand)
-		}
+	switch slashCommand.Text {
+	case "":
+		return ui.Index()
+	default:
+		return ui.NotFound()
 	}
-
-	return ui.NotFound()
 }

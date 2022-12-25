@@ -6,6 +6,10 @@ import (
 	"github.com/slack-go/slack"
 )
 
+//==========================================================================
+// Public
+//==========================================================================
+
 func Index() slack.Message {
 
 	return slack.NewBlockMessage(
