@@ -30,7 +30,16 @@ func loadSettings() *Settings {
 		}
 
 		log.Logger.Info("Configuration loaded")
-		return &settings
+		return postProcessProjectSettings(&settings)
 	}
 	panic("Config file doesnt exist. Freak out! Please make sure it exists and is at path ./config/config.yaml")
+}
+
+// postProcessProjectSettings applies post-processing to project settings
+func postProcessProjectSettings(settings *Settings) *Settings {
+	for key, val := range settings.Projects {
+		val.Name = key
+	}
+
+	return settings
 }
