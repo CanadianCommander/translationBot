@@ -10,7 +10,7 @@ import (
 // Public
 //==========================================================================
 
-const RepoStorageLocation = "/tmp/"
+const RepoStorageLocation = "./.repo/"
 
 // PullProjectRepo pulls the project repository and makes sure it's up-to-date.
 // #### params
