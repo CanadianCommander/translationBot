@@ -22,12 +22,12 @@ func ListMissingTranslations(interactionCallback *slack.InteractionCallback) err
 		return errors.New("could not find action matching id " + routes.ActionListMissingTranslations)
 	}
 
-	err := slackutil.DeleteEphemeral(interactionCallback.Channel.ID, interactionCallback.ResponseURL)
+	missingTranslations, err := translation.FindMissingTranslations(config.Projects[config.DefaultProject])
 	if err != nil {
 		return err
 	}
 
-	missingTranslations, err := translation.FindMissingTranslations(config.Projects[config.DefaultProject])
+	err = slackutil.DeleteEphemeral(interactionCallback.Channel.ID, interactionCallback.ResponseURL)
 	if err != nil {
 		return err
 	}

@@ -8,7 +8,7 @@ async function main() {
         process.exit(1);
     }
 
-    const ts = await import(`../../${args[0]}`);
+    const ts = await import(args[0]);
     process.stdout.write(JSON.stringify(ts["default"]))
 }
 

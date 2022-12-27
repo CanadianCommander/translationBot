@@ -5,6 +5,7 @@ import (
 	"github.com/CanadianCommander/translationBot/internal/lib/slackutil"
 	"github.com/CanadianCommander/translationBot/internal/lib/translation"
 	"github.com/slack-go/slack"
+	"strings"
 )
 
 //==========================================================================
@@ -17,15 +18,25 @@ import (
 func MissingTranslations(missingTranslations []translation.Translation) slack.Message {
 	blocks := []slack.Block{
 		slack.NewHeaderBlock(slackutil.NewTextBlock("Missing translations")),
-		slack.NewSectionBlock(
+		slack.NewContextBlock(
+			"instructions",
 			slackutil.NewTextBlock("The following sections detail the missing translations for each language."+
 				" If a language does not show up then it has no missing translations."+
-				" Each line represents a single missing translation. It indicates the key and the english value."),
-			nil,
-			nil),
+				" Each line represents a single missing translation. It indicates the translation key and the english string."),
+		),
 		slack.NewDividerBlock(),
 	}
-	blocks = append(blocks, getMissingTranslationOutputForLangs(missingTranslations)...)
+	if len(missingTranslations) > 0 {
+		blocks = append(blocks, getMissingTranslationOutputForLangs(missingTranslations)...)
+	} else {
+		blocks = append(
+			blocks,
+			slack.NewSectionBlock(
+				slackutil.NewTextBlock("All translations up to date! :tada:"),
+				nil,
+				nil),
+		)
+	}
 
 	return slack.NewBlockMessage(blocks...)
 }
@@ -61,7 +72,7 @@ func getMissingTranslationOutputForLangs(missingTranslations []translation.Trans
 
 func buildLanguageMissingTranslationBlocks(language string, missingTranslations string) []slack.Block {
 	return []slack.Block{
-		slack.NewHeaderBlock(slackutil.NewTextBlock(language)),
+		slack.NewHeaderBlock(slackutil.NewTextBlock(strings.ToUpper(language[:1]) + language[1:])),
 		slack.NewSectionBlock(
 			slackutil.NewMarkdownTextBlock(fmt.Sprintf("```%s\n```", missingTranslations)),
 			nil,

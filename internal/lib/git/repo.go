@@ -21,7 +21,7 @@ func PullProjectRepo(project *Project) error {
 		return err
 	}
 
-	if _, err := os.Stat(project.filePath()); err != nil {
+	if _, err := os.Stat(project.FilePath()); err != nil {
 		log.Logger.Infof("Repository for project %s doesn't exist. Cloning", project.Name)
 		err = exec.Command(
 			"git",
@@ -29,14 +29,14 @@ func PullProjectRepo(project *Project) error {
 			"-b",
 			project.Branch,
 			gitUrl,
-			project.filePath()).Run()
+			project.FilePath()).Run()
 		if err != nil {
 			return err
 		}
 	}
 
 	cmd := exec.Command("git", "pull", gitUrl)
-	cmd.Dir = project.filePath()
+	cmd.Dir = project.FilePath()
 
 	log.Logger.Infof("Pulling down project updates for %s", project.Name)
 	return cmd.Run()
