@@ -1,0 +1,18 @@
+{
+  "name": "tsJson",
+  "version": "1.0.0",
+  "description": "Typescript <-> JSON conversion cli",
+  "author": "Benjamin Benetti",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "toJson": "node --loader ts-node/esm src/cmd/toJson.ts",
+    "fromJson": "node --loader ts-node/esm src/cmd/fromJson.ts"
+  },
+  "dependencies": {
+    "@types/node": "^18.11.18",
+    "node": "16",
+    "ts-node": "10",
+    "typescript": "4.9"
+  }
+}
