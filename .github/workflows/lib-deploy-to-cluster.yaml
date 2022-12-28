@@ -26,7 +26,7 @@ on:
       SLACK_CLIENT_SECRET:
         description: Slack bot client secret. Used to interact with the slack API
         required: true
-      GIT_PASSOWRD:
+      GIT_PASSWORD:
         description: git repo password for default project. This will need to be refactored.
         required: true
 
