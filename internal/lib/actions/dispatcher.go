@@ -6,6 +6,7 @@ import (
 	"github.com/CanadianCommander/translationBot/internal/lib/routes"
 	"github.com/CanadianCommander/translationBot/internal/lib/slackutil"
 	"github.com/slack-go/slack"
+	"time"
 )
 
 //==========================================================================
@@ -38,12 +39,14 @@ func dispatchAction(interactionCallback *slack.InteractionCallback, block *slack
 	var err error = nil
 
 	log.Logger.Infof("Handling action %s", block.ActionID)
+	startTime := time.Now()
 	switch block.ActionID {
 	case routes.ActionListMissingTranslations:
 		err = ListMissingTranslations(interactionCallback)
 	case routes.ActionUpdateTranslations:
 		err = UpdateTranslations(interactionCallback)
 	}
+	log.Logger.Infof("%s handler completed in %dms", block.ActionID, time.Now().Sub(startTime).Milliseconds())
 
 	if err != nil {
 		log.Logger.Errorf("Unexpected error while handling slack action %s. %s", block.ActionID, err)
