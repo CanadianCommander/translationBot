@@ -6,3 +6,4 @@ ingressClass: haproxy
 secrets:
   slackClientSecret: <override me>
   slackSigningKey: <override me>
+  gitPassword: <override me>

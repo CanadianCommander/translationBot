@@ -45,4 +45,5 @@ jobs:
       SA_TOKEN: ${{ secrets.SA_TOKEN }}
       SLACK_SIGNING_KEY: ${{ secrets.SLACK_SIGNING_KEY }}
       SLACK_CLIENT_SECRET: ${{ secrets.SLACK_CLIENT_SECRET }}
+      GI_PASSWORD: ${{ secrets.GIT_PASSWORD }}
 

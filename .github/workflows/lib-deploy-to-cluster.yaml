@@ -26,6 +26,9 @@ on:
       SLACK_CLIENT_SECRET:
         description: Slack bot client secret. Used to interact with the slack API
         required: true
+      GIT_PASSOWRD:
+        description: git repo password for default project. This will need to be refactored.
+        required: true
 
 jobs:
 
@@ -59,4 +62,5 @@ jobs:
           --set image=ghcr.io/canadiancommander/translation-bot:${{ inputs.image-tag }} \
           --set secrets.slackSigningKey=${{ secrets.SLACK_SIGNING_KEY }} \
           --set secrets.slackClientSecret=${{ secrets.SLACK_CLIENT_SECRET }} \
+          --set secrets.gitPassword=${{ secrets.GIT_PASSWORD }} \
           tb ./kubernetes/helm/
