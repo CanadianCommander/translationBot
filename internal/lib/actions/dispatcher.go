@@ -56,7 +56,7 @@ func dispatchAction(interactionCallback *slack.InteractionCallback, block *slack
 
 // errorNotification shows a nice little error message to the user.
 func errorNotification(interactionCallback *slack.InteractionCallback, msg string) {
-	slackutil.DeleteEphemeral(interactionCallback.Channel.ID, interactionCallback.ResponseURL)
+	slackutil.DeleteMessageByResponseUrl(interactionCallback.Channel.ID, interactionCallback.ResponseURL)
 	slackutil.Api.PostEphemeral(
 		interactionCallback.Channel.ID,
 		interactionCallback.User.ID,

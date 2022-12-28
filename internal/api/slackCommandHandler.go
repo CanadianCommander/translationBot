@@ -19,6 +19,7 @@ func SlackSlashCommandHandler(gin *gin.Context) {
 		panic("Error decoding slash command")
 	}
 
-	message := slashcmd.DispatchCommand(slashCommand)
-	gin.JSON(http.StatusOK, message)
+	// due to strict response time limits we spawn a new goroutine and instantly response to slack
+	go slashcmd.DispatchCommand(slashCommand)
+	gin.Status(http.StatusOK)
 }

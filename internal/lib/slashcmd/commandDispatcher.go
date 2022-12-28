@@ -4,29 +4,41 @@ import (
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"github.com/CanadianCommander/translationBot/internal/lib/ui"
 	"github.com/slack-go/slack"
+	"strings"
+	"time"
 )
 
-type handler struct {
-	Cmd     string
-	Handler func(command slack.SlashCommand) slack.Message
-}
-
-// list of slash command handlers!
-var handlers = []handler{
-	{
-		Cmd:     "",
-		Handler: func(command slack.SlashCommand) slack.Message { return ui.Index() },
-	},
-}
+//==========================================================================
+// Public
+//==========================================================================
 
 // DispatchCommand to the appropriate handler and return the response from that handler
-func DispatchCommand(slashCommand slack.SlashCommand) slack.Message {
+func DispatchCommand(slashCommand slack.SlashCommand) {
 	log.Logger.Infof("Processing Slash Command %s", slashCommand.Text)
 
-	switch slashCommand.Text {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Logger.Errorf("Slash command handler [%s] panicked with error %s", slashCommand.Text, r)
+			_ = simpleResponse(&slashCommand, ui.ErrorNotification("O the humanity!"))
+		}
+	}()
+
+	startTime := time.Now()
+	args := strings.Split(slashCommand.Text, " ")
+	var err error
+	switch args[0] {
 	case "":
-		return ui.Index()
+		err = simpleResponse(&slashCommand, ui.Index())
+	case "missing":
+		err = listMissingTranslations(&slashCommand)
 	default:
-		return ui.NotFound()
+		err = simpleResponse(&slashCommand, ui.NotFound())
 	}
+
+	if err != nil {
+		log.Logger.Errorf("Unexpected error while handling slash command %s\n %s", slashCommand.Text, err)
+		_ = simpleResponse(&slashCommand, ui.ErrorNotification("To the logs!"))
+	}
+
+	log.Logger.Infof("Slash command %s processed in %dms", slashCommand.Text, time.Now().Sub(startTime).Milliseconds())
 }

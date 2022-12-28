@@ -35,7 +35,7 @@ func ListMissingTranslations(interactionCallback *slack.InteractionCallback) err
 		return err
 	}
 
-	err = slackutil.DeleteEphemeral(interactionCallback.Channel.ID, interactionCallback.ResponseURL)
+	err = slackutil.DeleteMessageByResponseUrl(interactionCallback.Channel.ID, interactionCallback.ResponseURL)
 	if err != nil {
 		return err
 	}
