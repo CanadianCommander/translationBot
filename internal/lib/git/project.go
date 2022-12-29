@@ -3,6 +3,7 @@ package git
 import (
 	"os"
 	"path"
+	"sync"
 )
 
 //==========================================================================
@@ -22,12 +23,27 @@ type Project struct {
 	// LANG: PATH
 	// Ex english: ./foo/bar/bang.yaml
 	TranslationFiles map[string]string `yaml:"translationFiles"`
+
+	// used to make sure only one goroute operates on a project at a time. The project folder is a shared resource.
+	ProjectLock sync.Mutex
 }
 
 // ProjectRelativePathToAbsolute converts a path that is relative to the projects root to an absolute path on the system.
 func (project *Project) ProjectRelativePathToAbsolute(filePath string) string {
 	cwd, _ := os.Getwd()
 	return path.Join(cwd, project.FilePath(), filePath)
+}
+
+//==========================================================================
+// sync.Locker implementation
+//==========================================================================
+
+func (project *Project) Lock() {
+	project.ProjectLock.Lock()
+}
+
+func (project *Project) Unlock() {
+	project.ProjectLock.Unlock()
 }
 
 //==========================================================================

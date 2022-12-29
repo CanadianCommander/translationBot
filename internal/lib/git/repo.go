@@ -16,6 +16,7 @@ const RepoStorageLocation = "./.repo/"
 // #### params
 // project - the project to pull
 func PullProjectRepo(project *Project) error {
+
 	gitUrl, err := buildGitAuthUrlForProject(project)
 	if err != nil {
 		return err

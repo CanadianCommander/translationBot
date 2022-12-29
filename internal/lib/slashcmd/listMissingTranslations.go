@@ -14,7 +14,8 @@ import (
 
 // listMissingTranslations lists missing translations to the user.
 func listMissingTranslations(slashCommand *slack.SlashCommand) error {
-	config := configuration.Get()
+	project := configuration.Get().GetDefaultProject()
+	defer project.Unlock()
 
 	_, loaderId, err := slackutil.Api.PostMessage(
 		slashCommand.ChannelID,
@@ -23,7 +24,7 @@ func listMissingTranslations(slashCommand *slack.SlashCommand) error {
 		return err
 	}
 
-	missingTranslations, err := translation.FindMissingTranslations(config.Projects[config.DefaultProject])
+	missingTranslations, err := translation.FindMissingTranslations(project)
 	if err != nil {
 		return err
 	}
