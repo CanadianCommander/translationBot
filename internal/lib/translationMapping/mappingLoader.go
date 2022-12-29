@@ -1,5 +1,10 @@
 package translationMapping
 
+import (
+	"github.com/CanadianCommander/translationBot/internal/lib/translation"
+	"io"
+)
+
 //==========================================================================
 // Public
 //==========================================================================
@@ -7,7 +12,7 @@ package translationMapping
 type MappingLoader interface {
 
 	// Load - load the given file in to the standard format.
-	Load(fileData []byte) []map[string]string
+	Load(fileData io.Reader) ([]translation.Translation, error)
 
 	// IsMimeSupported - check if the given mime type is supported by this loader
 	// #### params
