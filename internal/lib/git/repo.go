@@ -36,7 +36,7 @@ func PullProjectRepo(project *Project) error {
 		}
 	}
 
-	cmd := exec.Command("git", "pull", gitUrl)
+	cmd := exec.Command("git", "pull")
 	cmd.Dir = project.FilePath()
 
 	log.Logger.Infof("Pulling down project updates for %s", project.Name)

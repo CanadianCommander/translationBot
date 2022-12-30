@@ -2,6 +2,7 @@ package translation
 
 import (
 	"github.com/CanadianCommander/translationBot/internal/lib/git"
+	"github.com/CanadianCommander/translationBot/internal/lib/translationFile"
 	"golang.org/x/exp/maps"
 )
 
@@ -14,14 +15,14 @@ import (
 // project - the project to search for missing translations.
 // #### return
 // missing translation list. Where each translation is guaranteed to have a missing translation in at least one language.
-func FindMissingTranslations(project *git.Project) ([]Translation, error) {
+func FindMissingTranslations(project *git.Project) ([]translationFile.Translation, error) {
 	allTranslationsMap, err := LoadTranslations(project)
 	if err != nil {
 		return nil, err
 	}
 
 	allTranslations := maps.Values(allTranslationsMap)
-	missingTranslations := make([]Translation, 0, len(allTranslations))
+	missingTranslations := make([]translationFile.Translation, 0, len(allTranslations))
 	for _, trans := range allTranslations {
 		if trans.HasMissingTranslations() {
 			missingTranslations = append(missingTranslations, trans)

@@ -8,6 +8,11 @@ import (
 // Public
 //==========================================================================
 
+const (
+	// TextBlockCharacterLimit indicates the maximum number of characters a text block can contain.
+	TextBlockCharacterLimit = 3000
+)
+
 // DeleteMessageByResponseUrl removes an ephemeral slack message as identified by responseUrl
 // #### params
 // channelId - ID of the channel in which the ephemeral message resides

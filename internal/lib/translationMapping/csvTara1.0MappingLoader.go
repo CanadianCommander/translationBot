@@ -4,7 +4,7 @@ import (
 	"encoding/csv"
 	"errors"
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
-	"github.com/CanadianCommander/translationBot/internal/lib/translation"
+	"github.com/CanadianCommander/translationBot/internal/lib/translationFile"
 	"io"
 	"mime"
 	"regexp"
@@ -20,7 +20,7 @@ const CsvTaraFileMagic = "^ENGLISH,\\s+FRENCH"
 type CsvTaraMappingLoader struct {
 }
 
-func (c *CsvTaraMappingLoader) Load(fileData io.Reader) ([]translation.Translation, error) {
+func (c *CsvTaraMappingLoader) Load(fileData io.Reader) ([]translationFile.Translation, error) {
 	csvReader := csv.NewReader(fileData)
 	headers, err := csvReader.Read()
 	if err != nil {
@@ -34,7 +34,7 @@ func (c *CsvTaraMappingLoader) Load(fileData io.Reader) ([]translation.Translati
 		headers[idx] = strings.Trim(strings.ToLower(headers[idx]), " ")
 	}
 
-	mappings := make([]translation.Translation, 0, 1024)
+	mappings := make([]translationFile.Translation, 0, 1024)
 	for mapping, err := csvReader.Read(); mapping != nil; mapping, err = csvReader.Read() {
 		if err != nil {
 			return nil, err
@@ -49,7 +49,7 @@ func (c *CsvTaraMappingLoader) Load(fileData io.Reader) ([]translation.Translati
 
 		mappings = append(
 			mappings,
-			*translation.NewTranslation(
+			*translationFile.NewTranslation(
 				"",
 				mapping[0],
 				headers[1:],

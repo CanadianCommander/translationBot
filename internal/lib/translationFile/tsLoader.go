@@ -1,4 +1,4 @@
-package translation
+package translationFile
 
 import (
 	"bytes"
