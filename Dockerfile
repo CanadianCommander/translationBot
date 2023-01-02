@@ -14,7 +14,7 @@ WORKDIR /var/source
 COPY --from=phase-0 /var/source/tb /var/source/tb
 COPY --from=phase-0 /var/source/cmd/tsJson /var/source/cmd/tsJson
 
-RUN apk add git
+RUN apk add git bash
 
 RUN cd /var/source/cmd/tsJson && \
     yarn install
