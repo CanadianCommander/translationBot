@@ -25,6 +25,13 @@ spec:
             - mountPath: "/var/source/config/"
               name: translation-bot-secrets
               readOnly: true
+          resources:
+            limits:
+              memory: 50Mi
+              cpu: '1'
+            requests:
+              memory: 25Mi
+              cpu: 10m
       volumes:
         - name: translation-bot-secrets
           secret:
