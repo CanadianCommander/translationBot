@@ -16,16 +16,21 @@ type Project struct {
 	Branch      string
 	GitUsername string `yaml:"gitUsername"`
 	GitPassword string `yaml:"gitPassword"`
+	// The given command will run (in bash) before TranslationBot commits any changes
+	PreCommitAction string `yaml:"preCommitAction"`
 
 	// language that is the source of all other translations. aka "english"
 	SourceLanguage string `yaml:"sourceLanguage"`
+	// if true TranslationBot will update the source language files in addition to the translation files.
+	UpdateSourceFile bool `yaml:"updateSourceFiles"`
 	// translation file mappings.
 	// LANG: PATH
 	// Ex english: ./foo/bar/bang.yaml
 	TranslationFiles map[string]string `yaml:"translationFiles"`
 
 	// used to make sure only one goroute operates on a project at a time. The project folder is a shared resource.
-	ProjectLock sync.Mutex
+	IsLocked    bool
+	projectLock sync.Mutex
 }
 
 // ProjectRelativePathToAbsolute converts a path that is relative to the projects root to an absolute path on the system.
@@ -39,11 +44,13 @@ func (project *Project) ProjectRelativePathToAbsolute(filePath string) string {
 //==========================================================================
 
 func (project *Project) Lock() {
-	project.ProjectLock.Lock()
+	project.IsLocked = true
+	project.projectLock.Lock()
 }
 
 func (project *Project) Unlock() {
-	project.ProjectLock.Unlock()
+	project.IsLocked = false
+	project.projectLock.Unlock()
 }
 
 //==========================================================================

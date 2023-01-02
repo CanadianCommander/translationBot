@@ -16,7 +16,7 @@ import (
 // project - the project whose translations will be loaded
 func LoadTranslations(project *git.Project) (map[string]translationFile.Translation, error) {
 
-	err := git.PullProjectRepo(project)
+	err := git.InitializeProjectRepo(project)
 	if err != nil {
 		return nil, err
 	}

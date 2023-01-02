@@ -12,6 +12,8 @@ type Loader interface {
 	// language - language of the translation data
 	// file - path to file containing translation data
 	// translations - [optional] if provided translations will be added to the specified slice
+	// #### return
+	// a map of keypath: translation pairs. where keypath is the JSON path to the translation. ex. page.home.title
 	Load(sourceLanguage string,
 		translationLanguages []string,
 		language string,

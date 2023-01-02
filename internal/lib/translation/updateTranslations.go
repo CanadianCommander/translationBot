@@ -21,6 +21,8 @@ import (
 // #### return
 // a new branch name where the updates have been applied (branched from the default branch)
 func UpdateTranslationsFromSlackFile(slackFileId string, project *git.Project) (string, error) {
+	log.Logger.Infof("Updating translations for project %s using slack file %s", project.Name, slackFileId)
+
 	loader, err := translationMapping.GetMapperForSlackFile(slackFileId)
 	if err != nil {
 		return "", errors.New("unexpected error when searching for file loader")
@@ -42,16 +44,73 @@ func UpdateTranslationsFromSlackFile(slackFileId string, project *git.Project) (
 		return "", err
 	}
 
+	log.Logger.Infof("Applying translation mappings to project %s", project.Name)
 	applyMappings(maps.Values(currentTranslations), mappings)
 
-	log.Logger.Infof("%+v", currentTranslations)
+	log.Logger.Infof("Writing translation update to disk")
+	newBranch, err := updateTranslationFiles(project, currentTranslations)
+	if err != nil {
+		return "", err
+	}
 
-	return "yo moma", nil
+	log.Logger.Infof("Translation update complete. Changes in branch %s", newBranch)
+	return newBranch, nil
 }
 
 //==========================================================================
 // Private
 //==========================================================================
+
+// updateTranslationFiles updates the on disk translation files for the project
+// #### params
+// project - the project to update
+// translations - the translations to apply to the project
+// #### return
+// branch under which the applied changes can be found.
+func updateTranslationFiles(project *git.Project, translations map[string]translationFile.Translation) (string, error) {
+
+	newBranch := git.GenerateNewBranchName()
+	err := git.SwitchBranch(project, newBranch)
+	defer func(project *git.Project, branch string) {
+		err := git.SwitchBranch(project, branch)
+		if err != nil {
+			log.Logger.Errorf("Failed to switch back to default branch for project %s."+
+				" Project maybe in bad state!", project.Name)
+		}
+	}(project, project.Branch)
+	if err != nil {
+		log.Logger.Errorf("Failed to switch branch in project %s", project.Name)
+		return "", err
+	}
+
+	// update translation files
+	for lang, transFile := range project.TranslationFiles {
+		// if source file update disabled skip file
+		if !project.UpdateSourceFile && lang == project.SourceLanguage {
+			continue
+		}
+
+		writer := translationFile.GetWriterForFile(transFile)
+
+		if writer != nil {
+			err = writer.Write(project.ProjectRelativePathToAbsolute(transFile), lang, project.SourceLanguage, translations)
+			if err != nil {
+				return "", err
+			}
+
+		} else {
+			log.Logger.Errorf("Cannot  write translations to file %s. No writer matches", transFile)
+		}
+	}
+
+	err = git.CommitAndPushChanges(project)
+	if err != nil {
+		log.Logger.Errorf("Failed to commit and push changes for %s", project.Name)
+		return "", err
+	}
+
+	return newBranch, nil
+}
 
 // applyMappings applies translation mappings to the given translation set.
 // #### params

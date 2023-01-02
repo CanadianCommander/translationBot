@@ -3,6 +3,7 @@ package translationFile
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"os"
 	"os/exec"
 	"path"
@@ -28,6 +29,7 @@ func (t TsLoader) Load(
 	cmd.Dir = path.Join(cwd, "cmd/tsJson/")
 	cmd.Stdout = &cmdOutput
 	if err := cmd.Run(); err != nil {
+		log.Logger.Error("Error while running ", cmd.String())
 		return nil, err
 	}
 
