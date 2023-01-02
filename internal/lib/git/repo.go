@@ -38,7 +38,6 @@ func InitializeProjectRepo(project *Project) error {
 			project.FilePath())
 		err = cmd.Run()
 		if err != nil {
-			log.Logger.Errorf("Command %s failed", cmd.String())
 			return err
 		}
 	}

@@ -27,10 +27,10 @@ spec:
               readOnly: true
           resources:
             limits:
-              memory: 100Mi
+              memory: 500Mi
               cpu: '1'
             requests:
-              memory: 25Mi
+              memory: 250Mi
               cpu: 10m
       volumes:
         - name: translation-bot-secrets
