@@ -47,11 +47,11 @@ func extractTranslations(
 					translations[formatKeypath(keypath, key)] =
 						*NewTranslation(
 							formatKeypath(keypath, key),
-							val.(string),
+							strings.Trim(val.(string), " "),
 							translationLanguages,
 							make(map[string]string))
 				} else {
-					translationMap := map[string]string{lang: val.(string)}
+					translationMap := map[string]string{lang: strings.Trim(val.(string), " ")}
 
 					translations[formatKeypath(keypath, key)] =
 						*NewTranslation(

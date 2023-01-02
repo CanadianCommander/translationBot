@@ -44,14 +44,14 @@ func (c *CsvTaraMappingLoader) Load(fileData io.Reader) ([]translationFile.Trans
 
 		translationMap := make(map[string]string)
 		for idx, lang := range headers[1:] {
-			translationMap[lang] = mapping[idx+1]
+			translationMap[lang] = strings.Trim(mapping[idx+1], " ")
 		}
 
 		mappings = append(
 			mappings,
 			*translationFile.NewTranslation(
 				"",
-				mapping[0],
+				strings.Trim(mapping[0], " "),
 				headers[1:],
 				translationMap),
 		)
