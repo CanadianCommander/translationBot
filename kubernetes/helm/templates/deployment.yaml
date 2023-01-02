@@ -28,10 +28,10 @@ spec:
           resources:
             limits:
               memory: 500Mi
-              cpu: '1'
+              cpu: '4'
             requests:
               memory: 250Mi
-              cpu: 10m
+              cpu: 100m
       volumes:
         - name: translation-bot-secrets
           secret:
