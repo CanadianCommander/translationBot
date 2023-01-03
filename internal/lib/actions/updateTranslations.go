@@ -6,6 +6,7 @@ import (
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"github.com/CanadianCommander/translationBot/internal/lib/slackutil"
 	"github.com/CanadianCommander/translationBot/internal/lib/translation"
+	"github.com/CanadianCommander/translationBot/internal/lib/translationMapping"
 	"github.com/CanadianCommander/translationBot/internal/lib/ui"
 	"github.com/slack-go/slack"
 )
@@ -36,25 +37,33 @@ func UpdateTranslations(interactionCallback *slack.InteractionCallback, block *s
 			if err != nil {
 				return err
 			}
+		} else if validationError, ok := err.(translationMapping.ValidationError); ok {
+			err := slackutil.PostResponse(
+				interactionCallback.Channel.ID,
+				interactionCallback.ResponseURL,
+				ui.ErrorNotification(validationError.Error()))
+			if err != nil {
+				return err
+			}
 		} else {
 			return err
 		}
-	}
+	} else {
+		prUrl := "N/A"
+		if !config.TestMode {
+			prUrl, err = gh.CreatePr(project, "translation_bot_2023-01-03_1672706791")
+			if err != nil {
+				return err
+			}
+		}
 
-	prUrl := "N/A"
-	if !config.TestMode {
-		prUrl, err = gh.CreatePr(project, "translation_bot_2023-01-03_1672706791")
+		err = slackutil.PostResponse(
+			interactionCallback.Channel.ID,
+			interactionCallback.ResponseURL,
+			ui.TranslationUpdateSuccess(prUrl))
 		if err != nil {
 			return err
 		}
-	}
-
-	err = slackutil.PostResponse(
-		interactionCallback.Channel.ID,
-		interactionCallback.ResponseURL,
-		ui.TranslationUpdateSuccess(prUrl))
-	if err != nil {
-		return err
 	}
 
 	return nil

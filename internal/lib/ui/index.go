@@ -28,12 +28,11 @@ func Index() slack.Message {
 			routes.ActionListMissingTranslations,
 			"Run",
 			config.DefaultProject),
-		commandOptionHelpButton("upload", "Upload a new translation file (CSV). \n"+
-			"I can also automatically detect translations files uploaded to slack :wink: Try uploading one in this channel.",
-			true,
-			"FOOOOOBAR",
-			"Run",
-			""),
+		slack.NewSectionBlock(
+			slackutil.NewMarkdownTextBlock("`uploading translations` There is no command for updating translations. "+
+				"Simply post a translation CSV to the translations channel and I'll see it!"),
+			nil,
+			nil),
 	)
 }
 

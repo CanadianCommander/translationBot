@@ -2,7 +2,6 @@ package translationMapping
 
 import (
 	"encoding/csv"
-	"errors"
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"github.com/CanadianCommander/translationBot/internal/lib/translationFile"
 	"io"
@@ -27,7 +26,7 @@ func (c *CsvTaraMappingLoader) Load(fileData io.Reader) ([]translationFile.Trans
 		log.Logger.Error("Error while reading csv header ", err)
 		return nil, err
 	} else if len(headers) < 2 {
-		return nil, errors.New("expected at least 2 headers in CSV")
+		return nil, NewValidationError("expected at least 2 headers in CSV")
 	}
 
 	for idx, _ := range headers {
@@ -38,8 +37,8 @@ func (c *CsvTaraMappingLoader) Load(fileData io.Reader) ([]translationFile.Trans
 	for mapping, err := csvReader.Read(); mapping != nil; mapping, err = csvReader.Read() {
 		if err != nil {
 			return nil, err
-		} else if len(mapping) < len(headers) {
-			return nil, errors.New("one ore more CSV rows have less columns than there are headers")
+		} else if lenNonBlank(mapping) < len(headers) {
+			return nil, NewValidationError("one ore more CSV rows have less columns then there are headers")
 		}
 
 		translationMap := make(map[string]string)
@@ -77,4 +76,20 @@ func (c *CsvTaraMappingLoader) IsFileSupported(fileDataStart []byte) bool {
 
 func (c *CsvTaraMappingLoader) GetLoaderType() string {
 	return "CSV_Tara_1.0"
+}
+
+//==========================================================================
+// Private
+//==========================================================================
+
+// lenNonBlank counts the number of non blank strings in the slice
+func lenNonBlank(strings []string) int {
+	len := 0
+	for _, str := range strings {
+		if str != "" {
+			len++
+		}
+	}
+
+	return len
 }
