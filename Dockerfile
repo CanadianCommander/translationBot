@@ -16,8 +16,13 @@ COPY --from=phase-0 /var/source/cmd/tsJson /var/source/cmd/tsJson
 
 RUN apk add git bash
 
+# install TS components
 RUN cd /var/source/cmd/tsJson && \
     yarn install
+
+# setup git
+RUN git config --global user.email "translation.bot@bbenetti.ca" && \
+  git config --global user.name "Translation Bot"
 
 
 ENTRYPOINT ["/var/source/tb"]
