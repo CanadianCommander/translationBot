@@ -12,6 +12,8 @@ type Settings struct {
 
 	// what project should translation bot operate on if no project is specified in user command
 	DefaultProject string `yaml:"defaultProject"`
+	// if true all 'disruptive' remote actions will be skipped. i.e. translation updates will not be pushed and no PR will be opened
+	TestMode bool `yaml:"testMode"`
 	// projects on which translation bot can operate
 	Projects map[string]*git.Project
 }

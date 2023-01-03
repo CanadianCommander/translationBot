@@ -1,6 +1,10 @@
 package actions
 
-import "github.com/slack-go/slack"
+import (
+	"github.com/CanadianCommander/translationBot/internal/lib/slackutil"
+	"github.com/CanadianCommander/translationBot/internal/lib/ui"
+	"github.com/slack-go/slack"
+)
 
 //==========================================================================
 // Private
@@ -16,5 +20,20 @@ func getBlockActionById(actionId string, interactionCallback *slack.InteractionC
 		}
 	}
 
+	return nil
+}
+
+// showLoader displays a loader to the user
+// #### params
+// interactionCallback - the interaction callback being processed
+// msg - custom message to display on the loader
+func showLoader(interactionCallback *slack.InteractionCallback, msg string) error {
+	err := slackutil.PostResponse(
+		interactionCallback.Channel.ID,
+		interactionCallback.ResponseURL,
+		ui.LoadingIndicator(msg))
+	if err != nil {
+		return err
+	}
 	return nil
 }

@@ -24,10 +24,7 @@ func ListMissingTranslations(interactionCallback *slack.InteractionCallback) err
 		return errors.New("could not find action matching id " + routes.ActionListMissingTranslations)
 	}
 
-	err := slackutil.PostResponse(
-		interactionCallback.Channel.ID,
-		interactionCallback.ResponseURL,
-		ui.LoadingIndicator("Degaussing the translation matrix..."))
+	err := showLoader(interactionCallback, "Degaussing the translation matrix...")
 	if err != nil {
 		return err
 	}

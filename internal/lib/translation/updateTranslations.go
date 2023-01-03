@@ -1,6 +1,7 @@
 package translation
 
 import (
+	"github.com/CanadianCommander/translationBot/internal/lib/configuration"
 	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"github.com/CanadianCommander/translationBot/internal/lib/slackutil"
@@ -67,11 +68,12 @@ func UpdateTranslationsFromSlackFile(slackFileId string, project *git.Project) (
 // #### return
 // branch under which the applied changes can be found.
 func updateTranslationFiles(project *git.Project, translations map[string]translationFile.Translation) (string, error) {
+	config := configuration.Get()
 
 	newBranch := git.GenerateNewBranchName()
-	err := git.SwitchBranch(project, newBranch)
+	err := git.SwitchBranch(project, newBranch, true)
 	defer func(project *git.Project, branch string) {
-		err := git.SwitchBranch(project, branch)
+		err := git.SwitchBranch(project, branch, true)
 		if err != nil {
 			log.Logger.Errorf("Failed to switch back to default branch for project %s."+
 				" Project maybe in bad state!", project.Name)
@@ -102,11 +104,13 @@ func updateTranslationFiles(project *git.Project, translations map[string]transl
 		}
 	}
 
-	//err = git.CommitAndPushChanges(project)
-	//if err != nil {
-	//	log.Logger.Errorf("Failed to commit and push changes for %s", project.Name)
-	//	return "", err
-	//}
+	if !config.TestMode {
+		err = git.CommitAndPushChanges(project)
+		if err != nil {
+			log.Logger.Errorf("Failed to commit and push changes for %s", project.Name)
+			return "", err
+		}
+	}
 
 	return newBranch, nil
 }

@@ -42,7 +42,7 @@ func InitializeProjectRepo(project *Project) error {
 		}
 	}
 
-	err = SwitchBranch(project, project.Branch)
+	err = SwitchBranch(project, project.Branch, true)
 	if err != nil {
 		log.Logger.Errorf("Could not reset project %s to default branch %s", project.Name, project.Branch)
 		return err
@@ -110,7 +110,8 @@ func CleanProject(project *Project) error {
 // #### params
 // project - the project to change branches on
 // branch - the branch to switch to
-func SwitchBranch(project *Project, branch string) error {
+// pull - should the branch be pulled after switching
+func SwitchBranch(project *Project, branch string, pull bool) error {
 	checkProjectLock(project)
 	log.Logger.Infof("Switching to branch %s", branch)
 
@@ -151,7 +152,9 @@ func SwitchBranch(project *Project, branch string) error {
 			return err
 		}
 	} else {
-		return Pull(project)
+		if pull {
+			return Pull(project)
+		}
 	}
 
 	return nil

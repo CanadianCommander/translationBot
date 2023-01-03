@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/CanadianCommander/translationBot/internal/lib/configuration"
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"github.com/CanadianCommander/translationBot/internal/lib/slackutil"
 	"os"
@@ -13,6 +14,10 @@ func main() {
 
 	log.InitializeLogging()
 	slackutil.InitializeApi()
+
+	if configuration.Get().TestMode {
+		log.Logger.Infof("Running in test mode")
+	}
 
 	err := api.BuildV1Api().Run(":8080")
 	if err != nil {
