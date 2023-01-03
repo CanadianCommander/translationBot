@@ -8,6 +8,10 @@ import (
 	"net/http"
 )
 
+//==========================================================================
+// Public
+//==========================================================================
+
 // DownloadSlackFileById
 // #### params
 // fileId - the id of the slack file to download

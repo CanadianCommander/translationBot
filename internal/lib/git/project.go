@@ -44,13 +44,13 @@ func (project *Project) ProjectRelativePathToAbsolute(filePath string) string {
 //==========================================================================
 
 func (project *Project) Lock() {
-	project.IsLocked = true
 	project.projectLock.Lock()
+	project.IsLocked = true
 }
 
 func (project *Project) Unlock() {
-	project.IsLocked = false
 	project.projectLock.Unlock()
+	project.IsLocked = false
 }
 
 //==========================================================================

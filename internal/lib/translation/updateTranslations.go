@@ -1,7 +1,6 @@
 package translation
 
 import (
-	"errors"
 	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"github.com/CanadianCommander/translationBot/internal/lib/slackutil"
@@ -25,7 +24,7 @@ func UpdateTranslationsFromSlackFile(slackFileId string, project *git.Project) (
 
 	loader, err := translationMapping.GetMapperForSlackFile(slackFileId)
 	if err != nil {
-		return "", errors.New("unexpected error when searching for file loader")
+		return "", err
 	}
 
 	slackFileReader, err := slackutil.DownloadSlackFileById(slackFileId)
@@ -103,11 +102,11 @@ func updateTranslationFiles(project *git.Project, translations map[string]transl
 		}
 	}
 
-	err = git.CommitAndPushChanges(project)
-	if err != nil {
-		log.Logger.Errorf("Failed to commit and push changes for %s", project.Name)
-		return "", err
-	}
+	//err = git.CommitAndPushChanges(project)
+	//if err != nil {
+	//	log.Logger.Errorf("Failed to commit and push changes for %s", project.Name)
+	//	return "", err
+	//}
 
 	return newBranch, nil
 }
