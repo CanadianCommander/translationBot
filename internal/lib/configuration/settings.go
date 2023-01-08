@@ -25,11 +25,16 @@ type Settings struct {
 // GetDefaultProject returns the default project as configured.
 // Said project is LOCKED. The caller must unlock the project before discarding it.
 func (s *Settings) GetDefaultProject() *git.Project {
-	defaultProject := s.Projects[s.DefaultProject]
+	return s.GetProject(s.DefaultProject)
+}
 
-	if defaultProject != nil {
-		defaultProject.Lock()
-		return defaultProject
+// GetProject gets a project by name
+func (s *Settings) GetProject(projectName string) *git.Project {
+	project := s.Projects[projectName]
+
+	if project != nil {
+		project.Lock()
+		return project
 	}
-	return defaultProject
+	return project
 }

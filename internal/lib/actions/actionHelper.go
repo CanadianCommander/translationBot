@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"encoding/json"
 	"github.com/CanadianCommander/translationBot/internal/lib/slackutil"
 	"github.com/CanadianCommander/translationBot/internal/lib/ui"
 	"github.com/slack-go/slack"
@@ -36,4 +37,21 @@ func showLoader(interactionCallback *slack.InteractionCallback, msg string) erro
 		return err
 	}
 	return nil
+}
+
+// readProxyResponse reads a proxy response and splits out project, value.
+// #### params
+// rawResponse - raw input string that contains JSON
+// #### return
+// 0 - project name
+// 1 - original value passed at beginning of action chain.
+func readProxyResponse(rawResponse string) (string, string, error) {
+	proxyResp := ProjectSelectProxyRequestDto{}
+
+	err := json.Unmarshal([]byte(rawResponse), &proxyResp)
+	if err != nil {
+		return "", "", err
+	}
+
+	return proxyResp.Project, proxyResp.Value, nil
 }

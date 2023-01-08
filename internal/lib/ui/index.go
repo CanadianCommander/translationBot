@@ -25,11 +25,13 @@ func Index() slack.Message {
 		commandOptionHelpButton("projects",
 			"show a list of projects TranslationBot can translate",
 			true,
+			false,
 			routes.ActionListProjects,
 			"Run",
 			""),
 		commandOptionHelpButton("missing <project>",
 			"show a list of missing translations",
+			true,
 			true,
 			routes.ActionListMissingTranslations,
 			"Run",
@@ -46,7 +48,7 @@ func Index() slack.Message {
 // *command* - slash command. for example 'foobar' would be /translation foobar
 // *description* - description of the command
 func commandOptionHelp(command string, description string) *slack.SectionBlock {
-	return commandOptionHelpButton(command, description, false, "", "", "")
+	return commandOptionHelpButton(command, description, false, false, "", "", "")
 }
 
 // commandOptionHelpButton builds a new command option help message
@@ -60,12 +62,20 @@ func commandOptionHelpButton(
 	command string,
 	description string,
 	showActionButton bool,
+	multiProject bool,
 	actionId string,
 	buttonTitle string,
 	value string) *slack.SectionBlock {
 	var accessory *slack.Accessory = nil
 
-	if showActionButton {
+	if showActionButton && multiProject {
+		accessory = &slack.Accessory{
+			ButtonElement: slackutil.NewMultiProjectButtonBlockElement(
+				actionId,
+				value,
+				buttonTitle),
+		}
+	} else if showActionButton {
 		accessory = &slack.Accessory{
 			ButtonElement: slack.NewButtonBlockElement(
 				actionId,

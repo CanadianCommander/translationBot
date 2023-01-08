@@ -15,8 +15,13 @@ import (
 //==========================================================================
 
 // ListMissingTranslations in the project specified by the block action value
-func ListMissingTranslations(interactionCallback *slack.InteractionCallback) error {
-	project := configuration.Get().GetDefaultProject()
+func ListMissingTranslations(interactionCallback *slack.InteractionCallback, block *slack.BlockAction) error {
+	projectName, _, err := readProxyResponse(block.Value)
+	if err != nil {
+		return err
+	}
+
+	project := configuration.Get().GetProject(projectName)
 	defer project.Unlock()
 
 	action := getBlockActionById(routes.ActionListMissingTranslations, interactionCallback)
@@ -24,7 +29,7 @@ func ListMissingTranslations(interactionCallback *slack.InteractionCallback) err
 		return errors.New("could not find action matching id " + routes.ActionListMissingTranslations)
 	}
 
-	err := showLoader(interactionCallback, "Degaussing the translation matrix...")
+	err = showLoader(interactionCallback, "Degaussing the translation matrix...")
 	if err != nil {
 		return err
 	}

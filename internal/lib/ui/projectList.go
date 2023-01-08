@@ -5,16 +5,22 @@ import (
 	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"github.com/CanadianCommander/translationBot/internal/lib/slackutil"
 	"github.com/slack-go/slack"
+	"sort"
 )
 
 //==========================================================================
-// Private
+// Public
 //==========================================================================
 
 // ProjectList renders a ui showing the list of projects supported by TranslationBot
 // #### params
 // projects - projects to list
 func ProjectList(projects []*git.Project) slack.Message {
+
+	// make sure projects display in consistent order
+	sort.Slice(projects, func(p0 int, p1 int) bool {
+		return projects[p0].Name < projects[p1].Name
+	})
 
 	projectList := "```\n"
 	for _, project := range projects {

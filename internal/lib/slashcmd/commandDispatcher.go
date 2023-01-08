@@ -35,7 +35,7 @@ func DispatchCommand(slashCommand slack.SlashCommand) {
 	case "projects":
 		err = simpleResponse(&slashCommand, ui.ProjectList(maps.Values(config.Projects)))
 	case "missing":
-		err = listMissingTranslations(&slashCommand)
+		err = listMissingTranslations(&slashCommand, args)
 	default:
 		err = simpleResponse(&slashCommand, ui.NotFound())
 	}
