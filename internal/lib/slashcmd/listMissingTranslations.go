@@ -52,7 +52,7 @@ func listMissingTranslations(slashCommand *slack.SlashCommand, args []string) er
 		return err
 	}
 
-	response := ui.MissingTranslations(missingTranslations)
+	response := ui.MissingTranslations(missingTranslations, project.Name)
 	_, _, err = slackutil.Api.PostMessage(slashCommand.ChannelID, slackutil.SlackMessageToMsgOption(response))
 	if err != nil {
 		return err

@@ -16,9 +16,10 @@ import (
 // MissingTranslations outputs a slack message that allows users to visualize the missing translations.
 // #### params
 // missingTranslations - a list of translations missing values for one or more languages
-func MissingTranslations(missingTranslations []translationFile.Translation) slack.Message {
+// projectName - the name of the project to which the missing translations pertain
+func MissingTranslations(missingTranslations []translationFile.Translation, projectName string) slack.Message {
 	blocks := []slack.Block{
-		slack.NewHeaderBlock(slackutil.NewTextBlock("Missing translations")),
+		slack.NewHeaderBlock(slackutil.NewTextBlock(fmt.Sprintf("%s Missing translations", projectName))),
 		slack.NewContextBlock(
 			"instructions",
 			slackutil.NewTextBlock("The following sections detail the missing translations for each language."+

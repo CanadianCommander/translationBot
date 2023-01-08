@@ -44,7 +44,7 @@ func ListMissingTranslations(interactionCallback *slack.InteractionCallback, blo
 		return err
 	}
 
-	response := ui.MissingTranslations(missingTranslations)
+	response := ui.MissingTranslations(missingTranslations, projectName)
 	_, _, err = slackutil.Api.PostMessage(interactionCallback.Channel.ID, slackutil.SlackMessageToMsgOption(response))
 	if err != nil {
 		return err

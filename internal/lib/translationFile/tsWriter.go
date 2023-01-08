@@ -37,8 +37,9 @@ func (tsWriter *TsWriter) Write(filePath string, lang string, sourceLanguage str
 	cwd, _ := os.Getwd()
 	cmd.Dir = path.Join(cwd, "cmd/tsJson/")
 	cmd.Stdin = inputJsonBuffer
-	if err := cmd.Run(); err != nil {
+	if out, err := cmd.CombinedOutput(); err != nil {
 		log.Logger.Error("Error while running ", cmd.String())
+		log.Logger.Error(out)
 		return err
 	}
 
@@ -46,5 +47,5 @@ func (tsWriter *TsWriter) Write(filePath string, lang string, sourceLanguage str
 }
 
 func (tsWriter *TsWriter) CanWrite(filePath string) bool {
-	return path.Ext(filePath) == ".ts"
+	return path.Ext(filePath) == ".ts" || path.Ext(filePath) == ".js"
 }
