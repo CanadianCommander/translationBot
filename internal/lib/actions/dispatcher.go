@@ -41,6 +41,8 @@ func dispatchAction(interactionCallback *slack.InteractionCallback, block *slack
 	log.Logger.Infof("Handling action %s", block.ActionID)
 	startTime := time.Now()
 	switch block.ActionID {
+	case routes.ActionListProjects:
+		err = listProjects(interactionCallback)
 	case routes.ActionListMissingTranslations:
 		err = ListMissingTranslations(interactionCallback)
 	case routes.ActionUpdateTranslations:
