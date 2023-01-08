@@ -1,9 +1,11 @@
 package slashcmd
 
 import (
+	"github.com/CanadianCommander/translationBot/internal/lib/configuration"
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"github.com/CanadianCommander/translationBot/internal/lib/ui"
 	"github.com/slack-go/slack"
+	"golang.org/x/exp/maps"
 	"strings"
 	"time"
 )
@@ -15,6 +17,7 @@ import (
 // DispatchCommand to the appropriate handler and return the response from that handler
 func DispatchCommand(slashCommand slack.SlashCommand) {
 	log.Logger.Infof("Processing Slash Command %s", slashCommand.Text)
+	config := configuration.Get()
 
 	defer func() {
 		if r := recover(); r != nil {
@@ -29,6 +32,8 @@ func DispatchCommand(slashCommand slack.SlashCommand) {
 	switch args[0] {
 	case "":
 		err = simpleResponse(&slashCommand, ui.Index())
+	case "projects":
+		err = simpleResponse(&slashCommand, ui.ProjectList(maps.Values(config.Projects)))
 	case "missing":
 		err = listMissingTranslations(&slashCommand)
 	default:

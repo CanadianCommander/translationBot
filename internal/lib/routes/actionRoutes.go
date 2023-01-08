@@ -6,6 +6,7 @@ package routes
 
 // action "routes"
 const (
+	ActionListProjects            = "ListProjects"
 	ActionListMissingTranslations = "ListMissingTranslations"
 	ActionUpdateTranslations      = "UpdateTranslations"
 )
