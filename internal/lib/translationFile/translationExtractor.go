@@ -40,7 +40,13 @@ func extractTranslations(
 		case string:
 			trans, exists := translations[formatKeypath(keypath, key)]
 			if exists {
-				trans.Translations[lang] = val.(string)
+				if lang == sourceLanguage {
+					trans.SourceValue = val.(string)
+				} else {
+					trans.Translations[lang] = val.(string)
+				}
+
+				translations[formatKeypath(keypath, key)] = trans
 			} else {
 				if lang == sourceLanguage {
 					translations[formatKeypath(keypath, key)] =

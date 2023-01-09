@@ -19,7 +19,7 @@ import (
 // projectName - the name of the project to which the missing translations pertain
 func MissingTranslations(missingTranslations []translationFile.Translation, projectName string) slack.Message {
 	blocks := []slack.Block{
-		slack.NewHeaderBlock(slackutil.NewTextBlock(fmt.Sprintf("%s Missing translations", projectName))),
+		slack.NewHeaderBlock(slackutil.NewTextBlock(fmt.Sprintf("%s missing translations", projectName))),
 		slack.NewContextBlock(
 			"instructions",
 			slackutil.NewTextBlock("The following sections detail the missing translations for each language."+
@@ -90,9 +90,10 @@ func buildLanguageMissingTranslationBlocks(language string, missingTranslations 
 			textBlocks = append(textBlocks, slack.NewSectionBlock(currTextBlock, nil, nil))
 		} else {
 			currTextBlock.Text += formattedLine
-			if idx == len(lines)-1 {
-				currTextBlock.Text += "```"
-			}
+		}
+
+		if idx == len(lines)-1 {
+			currTextBlock.Text += "```"
 		}
 	}
 
