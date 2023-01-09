@@ -3,6 +3,7 @@ package ui
 import (
 	"fmt"
 	"github.com/CanadianCommander/translationBot/internal/lib/git"
+	"github.com/CanadianCommander/translationBot/internal/lib/routes"
 	"github.com/CanadianCommander/translationBot/internal/lib/slackutil"
 	"github.com/slack-go/slack"
 	"sort"
@@ -37,6 +38,10 @@ func ProjectList(projects []*git.Project) slack.Message {
 			slackutil.NewMarkdownTextBlock(projectList),
 			nil,
 			nil),
+		slack.NewActionBlock(
+			"actions",
+			slack.NewButtonBlockElement(
+				routes.ActionIndex, "", slackutil.NewTextBlock("Back"))),
 	)
 
 }

@@ -42,8 +42,8 @@ To handle this you will have to use the following format (TODO)
 
 #### setup 
 
-Create a configuration file for Translation bot under `./config/config.yaml` The file should be similar to 
-`kubernetes/helm/templates/translation-bot-secrets.yaml`. It is up to you, which projects you config. Just be 
+Create a configuration file for TranslationBot under `./config/config.yaml` The file should be similar to 
+`kubernetes/helm/templates/translation-bot-secrets.yaml`. It is up to you, which projects you configure. Just be 
 sure to fill in the secret values such as `slackClientSecret` and `gitPassword` 
 
 Now that you have a config file, simply start TranslationBot `go run ./cmd/tb` It's just that simple 

@@ -24,7 +24,8 @@ func ApplyTranslationMappingsPrompt(fileId string) slack.Message {
 			slackutil.NewMultiProjectButtonBlockElement(
 				routes.ActionUpdateTranslations,
 				fileId,
-				"Update"),
+				"Update",
+				false),
 		),
 	)
 }

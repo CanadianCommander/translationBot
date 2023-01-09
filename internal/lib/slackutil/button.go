@@ -15,6 +15,8 @@ import (
 type MultiProjectInputDto struct {
 	ActionId string
 	Value    string
+	// should the user be given the option to go back to the index page?
+	ShowBackToIndex bool
 }
 
 // NewMultiProjectButtonBlockElement creates a new slack button element that allows the user to select which project
@@ -23,10 +25,11 @@ type MultiProjectInputDto struct {
 // actionId - the action to perform
 // value - the value to send to that action
 // text - the button text
-func NewMultiProjectButtonBlockElement(actionId string, value string, text string) *slack.ButtonBlockElement {
+func NewMultiProjectButtonBlockElement(actionId string, value string, text string, showBackToIndex bool) *slack.ButtonBlockElement {
 	proxyValue := MultiProjectInputDto{
-		ActionId: actionId,
-		Value:    value,
+		ActionId:        actionId,
+		Value:           value,
+		ShowBackToIndex: showBackToIndex,
 	}
 	proxyValueStr, err := json.Marshal(proxyValue)
 	if err != nil {

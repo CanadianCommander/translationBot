@@ -41,6 +41,12 @@ func Index() slack.Message {
 				"Simply post a translation CSV to the translations channel and I'll see it!"),
 			nil,
 			nil),
+		slack.NewActionBlock(
+			"actions",
+			slack.NewButtonBlockElement(routes.ActionCancel, "", slackutil.NewTextBlock("Cancel"))),
+		slack.NewContextBlock(
+			"gh link",
+			slackutil.NewMarkdownTextBlock("TranslationBot source code on <https://github.com/CanadianCommander/translationBot|GitHub!>")),
 	)
 }
 
@@ -73,7 +79,8 @@ func commandOptionHelpButton(
 			ButtonElement: slackutil.NewMultiProjectButtonBlockElement(
 				actionId,
 				value,
-				buttonTitle),
+				buttonTitle,
+				true),
 		}
 	} else if showActionButton {
 		accessory = &slack.Accessory{

@@ -52,5 +52,5 @@ func projectSelectProxy(interactionCallback *slack.InteractionCallback, block *s
 	return slackutil.PostResponse(
 		interactionCallback.Channel.ID,
 		interactionCallback.ResponseURL,
-		ui.ProjectSelectList(projects, actions, values))
+		ui.ProjectSelectList(projects, actions, values, input.ShowBackToIndex))
 }
