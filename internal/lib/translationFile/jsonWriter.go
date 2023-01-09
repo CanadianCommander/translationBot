@@ -23,13 +23,13 @@ func (jsonWriter *JsonWriter) Write(filePath string, lang string, sourceLanguage
 
 	rawTranslations := translationsToMap(lang, translations, lang == sourceLanguage)
 
-	jsonStr, err := json.Marshal(rawTranslations)
+	jsonStr, err := json.MarshalIndent(rawTranslations, "", "  ")
 	if err != nil {
 		log.Logger.Error("Error Marshaling translation JSON during translation file write, ", err)
 		return err
 	}
 
-	file, err := os.OpenFile(filePath, os.O_TRUNC|os.O_CREATE, 0666)
+	file, err := os.OpenFile(filePath, os.O_TRUNC|os.O_CREATE|os.O_RDWR, 0666)
 	if err != nil {
 		return err
 	}
