@@ -14,16 +14,21 @@ import (
 //==========================================================================
 
 // ReleaseNotes simple page that displays release notes
-func ReleaseNotes() slack.Message {
+// #### params
+// showBackButton - if true a back button will display. The button takes the user back to the index page.
+func ReleaseNotes(showBackButton bool) slack.Message {
 	config := configuration.Get()
 
 	var blocks []slack.Block
 
 	blocks = append(blocks, versionBlock(config.Version, notes2023_01_08)...)
-	blocks = append(blocks,
-		slack.NewActionBlock(
-			"actions",
-			slack.NewButtonBlockElement(routes.ActionIndex, "", slackutil.NewTextBlock("Back"))))
+
+	if showBackButton {
+		blocks = append(blocks,
+			slack.NewActionBlock(
+				"actions",
+				slack.NewButtonBlockElement(routes.ActionIndex, "", slackutil.NewTextBlock("Back"))))
+	}
 
 	return slack.NewBlockMessage(blocks...)
 }

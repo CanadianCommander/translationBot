@@ -37,7 +37,7 @@ func DispatchCommand(slashCommand slack.SlashCommand) {
 	case "missing":
 		err = listMissingTranslations(&slashCommand, args)
 	case "release", "notes":
-		err = simplePublicResponse(&slashCommand, ui.ReleaseNotes())
+		err = simplePublicResponse(&slashCommand, ui.ReleaseNotes(false))
 	default:
 		err = simpleResponse(&slashCommand, ui.NotFound())
 	}
