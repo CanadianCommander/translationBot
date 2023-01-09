@@ -60,6 +60,7 @@ jobs:
           --namespace translation-bot \
           --create-namespace \
           --set image=ghcr.io/canadiancommander/translation-bot:${{ inputs.image-tag }} \
+          --set version=${{ inputs.image-tag }} \
           --set secrets.slackSigningKey=${{ secrets.SLACK_SIGNING_KEY }} \
           --set secrets.slackClientSecret=${{ secrets.SLACK_CLIENT_SECRET }} \
           --set secrets.gitPassword=${{ secrets.GIT_PASSWORD }} \

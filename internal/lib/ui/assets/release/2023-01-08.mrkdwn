@@ -1,0 +1,19 @@
+*Features:*
+```
+- Snapclarity support! Translation bot can now translate Snapclarity! Using the two new projects `snap-frontend` and `snap-backend`
+- Multi project support is now complete! TranslationBot now correctly handles multiple projects. It will now ask when performing
+actions which project those acctions should apply to.
+- Project list command. This command allows you to view all configured projects
+- Notes / Release command. This is the command you are viewing right now!
+```
+
+*Improvements:*
+```
+- Navigation around the "index" page has been improved. You can now go backward and forward from sub "pages"
+```
+
+*Fixes:*
+```
+- Fixed source translation values not getting populated if the source language was not the first translation file to load.
+- Fixed JSON output formatting when updating translations on JSON translation files. Output is not human readable :P
+```

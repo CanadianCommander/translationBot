@@ -19,6 +19,8 @@ spec:
           env:
             - name: GIN_MODE
               value: release
+            - name: VERSION
+              value: {{ .Values.version }}
           image: {{ .Values.image }}
           imagePullPolicy: Always
           volumeMounts:

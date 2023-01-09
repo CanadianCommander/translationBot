@@ -5,6 +5,7 @@ import (
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"github.com/CanadianCommander/translationBot/internal/lib/routes"
 	"github.com/CanadianCommander/translationBot/internal/lib/slackutil"
+	"github.com/CanadianCommander/translationBot/internal/lib/ui"
 	"github.com/slack-go/slack"
 	"time"
 )
@@ -16,10 +17,13 @@ import (
 // Dispatch incoming action to appropriate handler
 func Dispatch(interactionCallback *slack.InteractionCallback) error {
 
-	for _, block := range interactionCallback.ActionCallback.BlockActions {
-		go dispatchAction(interactionCallback, block)
+	if interactionCallback.Type == slack.InteractionTypeBlockActions {
+		for _, block := range interactionCallback.ActionCallback.BlockActions {
+			go dispatchAction(interactionCallback, block)
+		}
+	} else {
+		log.Logger.Errorf("Received unexpected interaction callback type from slack [%s]", interactionCallback.Type)
 	}
-
 	return nil
 }
 
@@ -46,13 +50,15 @@ func dispatchAction(interactionCallback *slack.InteractionCallback, block *slack
 	case routes.ActionProjectProxy:
 		err = projectSelectProxy(interactionCallback, block)
 	case routes.ActionIndex:
-		err = index(interactionCallback)
+		err = simpleAction(interactionCallback, ui.Index())
 	case routes.ActionListProjects:
 		err = listProjects(interactionCallback)
 	case routes.ActionListMissingTranslations:
 		err = ListMissingTranslations(interactionCallback, block)
 	case routes.ActionUpdateTranslations:
 		err = UpdateTranslations(interactionCallback, block)
+	case routes.ActionReleaseNotes:
+		err = simpleAction(interactionCallback, ui.ReleaseNotes())
 	}
 	log.Logger.Infof("%s handler completed in %dms", block.ActionID, time.Now().Sub(startTime).Milliseconds())
 

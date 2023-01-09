@@ -41,6 +41,13 @@ func Index() slack.Message {
 				"Simply post a translation CSV to the translations channel and I'll see it!"),
 			nil,
 			nil),
+		commandOptionHelpButton("notes",
+			"display TranslationBot release notes",
+			true,
+			false,
+			routes.ActionReleaseNotes,
+			"Run",
+			config.DefaultProject),
 		slack.NewActionBlock(
 			"actions",
 			slack.NewButtonBlockElement(routes.ActionCancel, "", slackutil.NewTextBlock("Cancel"))),

@@ -2,6 +2,7 @@
 hostname: translation-bot.apps.cluster.bbenetti.ca
 image: ghcr.io/canadiancommander/translation-bot:latest
 ingressClass: haproxy
+version: <override me>
 
 secrets:
   slackClientSecret: <override me>

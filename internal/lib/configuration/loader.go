@@ -12,6 +12,8 @@ const configFilePath = "./config/config.yaml"
 // Private
 //==========================================================================
 
+const EnvironmentVersion = "VERSION"
+
 // loadSettings from the configuration file.
 func loadSettings() *Settings {
 	log.Logger.Infof("Loading configuration file %s", configFilePath)
@@ -27,6 +29,11 @@ func loadSettings() *Settings {
 		err = yaml.Unmarshal(configYaml, &settings)
 		if err != nil {
 			panic(err)
+		}
+
+		settings.Version = os.Getenv(EnvironmentVersion)
+		if settings.Version == "" {
+			settings.Version = "unknown"
 		}
 
 		log.Logger.Info("Configuration loaded")
