@@ -4,7 +4,6 @@ import (
 	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"github.com/CanadianCommander/translationBot/internal/lib/slackutil"
 	"github.com/slack-go/slack"
-	"sort"
 )
 
 //==========================================================================
@@ -17,11 +16,6 @@ import (
 // actions - a list of actions in exactly the same order as projects. This list maps projects to slack actions
 // values - a list of values in exactly the same order as projects. This list maps values to projects for use in actions
 func ProjectSelectList(projects []*git.Project, actions []string, values []string) slack.Message {
-
-	// make sure projects display in consistent order
-	sort.Slice(projects, func(p0 int, p1 int) bool {
-		return projects[p0].Name < projects[p1].Name
-	})
 
 	var projectBlocks []slack.Block
 	for idx, project := range projects {

@@ -1,7 +1,6 @@
 package translationFile
 
 import (
-	"fmt"
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"strings"
 )
@@ -65,8 +64,4 @@ func extractTranslations(
 			log.Logger.Warn("JSON data found that is not a string or a map! did you put a number / array in the translationData? Ignoring")
 		}
 	}
-}
-
-func formatKeypath(path string, key string) string {
-	return strings.TrimLeft(fmt.Sprintf("%s.%s", path, key), ".")
 }

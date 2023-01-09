@@ -109,5 +109,5 @@ func buildLanguageMissingTranslationBlocks(language string, missingTranslations 
 // #### params
 // translation - the translation to output the missing line for
 func formatMissingTranslationLine(translation *translationFile.Translation) string {
-	return fmt.Sprintf("\n%s \"%s\"", translation.Key, translation.SourceValue)
+	return fmt.Sprintf("\n%s \"%s\"", translation.HumanKey(), translation.SourceValue)
 }

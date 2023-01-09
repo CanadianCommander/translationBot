@@ -35,6 +35,16 @@ func NewTranslation(key string, sourceValue string, supportedLangs []string, tra
 // Getters
 //==========================================================================
 
+// HumanKey formats the key of this translation for human consumption (makes it look nice)
+func (t *Translation) HumanKey() string {
+	return unEscapeKeypath(t.Key)
+}
+
+// PathParts gets the path parts for this translation's key
+func (t *Translation) PathParts() []string {
+	return splitKeypath(t.Key)
+}
+
 // MissingLanguages produces a list of languages missing translations
 func (t *Translation) MissingLanguages() []string {
 	var missing []string

@@ -171,9 +171,10 @@ func CommitChanges(project *Project) error {
 
 		cmd := exec.Command("bash", "-c", project.PreCommitAction)
 		cmd.Dir = project.FilePath()
-		err := cmd.Run()
+		out, err := cmd.CombinedOutput()
 		if err != nil {
 			log.Logger.Errorf("Pre commit action errored out %s", err)
+			log.Logger.Error(string(out))
 			return err
 		}
 	}

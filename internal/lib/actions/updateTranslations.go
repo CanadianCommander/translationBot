@@ -18,16 +18,21 @@ import (
 func UpdateTranslations(interactionCallback *slack.InteractionCallback, block *slack.BlockAction) error {
 	log.Logger.Infof("Applying translation update using translation file %s", block.Value)
 
-	config := configuration.Get()
-	project := config.GetDefaultProject()
-	defer project.Unlock()
-
-	err := showLoader(interactionCallback, "Loading Universal Translator...")
+	projectName, actionValue, err := readProxyResponse(block.Value)
 	if err != nil {
 		return err
 	}
 
-	_, err = translation.UpdateTranslationsFromSlackFile(block.Value, project)
+	config := configuration.Get()
+	project := config.GetProject(projectName)
+	defer project.Unlock()
+
+	err = showLoader(interactionCallback, "Loading Universal Translator...")
+	if err != nil {
+		return err
+	}
+
+	newBranch, err := translation.UpdateTranslationsFromSlackFile(actionValue, project)
 	if err != nil {
 		if err.Error() == slackutil.ErrorFileNotFound {
 			err := slackutil.PostResponse(
@@ -51,7 +56,7 @@ func UpdateTranslations(interactionCallback *slack.InteractionCallback, block *s
 	} else {
 		prUrl := "N/A"
 		if !config.TestMode {
-			prUrl, err = gh.CreatePr(project, "translation_bot_2023-01-03_1672706791")
+			prUrl, err = gh.CreatePr(project, newBranch)
 			if err != nil {
 				return err
 			}

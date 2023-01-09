@@ -7,6 +7,7 @@ import (
 	"github.com/CanadianCommander/translationBot/internal/lib/ui"
 	"github.com/slack-go/slack"
 	"golang.org/x/exp/maps"
+	"sort"
 )
 
 //==========================================================================
@@ -24,6 +25,11 @@ func projectSelectProxy(interactionCallback *slack.InteractionCallback, block *s
 	if err != nil {
 		return err
 	}
+
+	// make sure projects display in consistent order
+	sort.Slice(projects, func(p0 int, p1 int) bool {
+		return projects[p0].Name < projects[p1].Name
+	})
 
 	actions := make([]string, len(projects))
 	values := make([]string, len(projects))

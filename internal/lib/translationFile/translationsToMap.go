@@ -28,7 +28,7 @@ func translationsToMap(lang string, translationMap map[string]Translation, isSou
 	})
 
 	for _, translation := range translations {
-		pathParts := strings.Split(translation.Key, ".")
+		pathParts := translation.PathParts()
 		currentPosition := output
 
 		for i, part := range pathParts {

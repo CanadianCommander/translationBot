@@ -12,6 +12,7 @@ async function main() {
     const json = JSON.parse(fs.readFileSync(process.stdin.fd).toString())
     fs.writeFileSync(
         args[0],
+        "/* eslint-disable import/no-anonymous-default-export */ \n" +
         "export default " + JSON.stringify(json, null, 2) + '\n',
         {
             flag: "w"
