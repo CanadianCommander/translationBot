@@ -63,5 +63,7 @@ jobs:
           --set version=${{ inputs.image-tag }} \
           --set secrets.slackSigningKey=${{ secrets.SLACK_SIGNING_KEY }} \
           --set secrets.slackClientSecret=${{ secrets.SLACK_CLIENT_SECRET }} \
-          --set secrets.gitPassword=${{ secrets.GIT_PASSWORD }} \
+          --set projects.kii.gitPassword=${{ secrets.GIT_PASSWORD }} \
+          --set projects.snap-frontend.gitPassword=${{ secrets.GIT_PASSWORD }} \
+          --set projects.snap-backend.gitPassword=${{ secrets.GIT_PASSWORD }} \
           tb ./kubernetes/helm/

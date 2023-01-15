@@ -1,0 +1,45 @@
+hostname: translation-bot.apps.cluster.bbenetti.ca
+version: <override me>
+defaultProject: kii
+
+secrets:
+  slackClientSecret: <override me>
+  slackSigningKey: <override me>
+
+projects:
+  kii:
+    url: https://github.com/CloudMD-SSI/fusion.git
+    branch: dev
+    sourceLanguage: english
+    updateSourceFile: false
+    preCommitAction: cd frontend-vue && yarn install && yarn run eslint --fix --ext .ts ./src/i18n/
+    translationFiles:
+      english: frontend-vue/src/i18n/en-US/index.ts
+      french: frontend-vue/src/i18n/fr-CA/index.ts
+    gitUsername: CanadianCommander-Work
+    gitPassword: <override me>
+
+  snap-frontend:
+    url: https://github.com/CloudMD-SSI/snapclarity.git
+    branch: dev
+    sourceLanguage: english
+    updateSourceFile: false
+    preCommitAction: cd b2b-patient-onboarding && yarn install && yarn run eslint --fix --ext .js ./src/locales/
+    translationFiles:
+      english: b2b-patient-onboarding/src/locales/en.js
+      french: b2b-patient-onboarding/src/locales/fr-CA.js
+      spanish: b2b-patient-onboarding/src/locales/es-US.js
+    gitUsername: CanadianCommander-Work
+    gitPassword: <override me>
+
+  snap-backend:
+    url: https://github.com/CloudMD-SSI/snapclarity.git
+    branch: dev
+    sourceLanguage: english
+    updateSourceFile: false
+    translationFiles:
+      french: locales/fr-CA/translation.json
+      spanish: locales/es-US/translation.json
+      english: locales/en/translation.json
+    gitUsername: CanadianCommander-Work
+    gitPassword: <override me>
