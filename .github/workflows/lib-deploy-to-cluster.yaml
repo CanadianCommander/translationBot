@@ -59,6 +59,7 @@ jobs:
           --install \
           --namespace translation-bot \
           --create-namespace \
+          --values ./kubernetes/helm/cloudmd.yaml \
           --set image=ghcr.io/canadiancommander/translation-bot:${{ inputs.image-tag }} \
           --set version=${{ inputs.image-tag }} \
           --set secrets.slackSigningKey=${{ secrets.SLACK_SIGNING_KEY }} \
