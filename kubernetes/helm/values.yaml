@@ -9,17 +9,5 @@ secrets:
   slackClientSecret: <override me>
   slackSigningKey: <override me>
 
-# one or more project blocks. The following is an example block. It will not actually function
-# but, it should give you an idea of the structure.
-projects:
-  example:
-    url: https://github.com/CanadianCommander/translationBot.git
-    branch: main
-    sourceLanguage: english
-    updateSourceFile: false
-    preCommitAction: <bash commands>
-    translationFiles:
-      english: lang/en-example.json
-      french: lang/fr-example.json
-    gitUsername: CanadianCommander
-    gitPassword: XXX
+# one or more project blocks. See cloudmd.yaml for examples.
+projects: {}
