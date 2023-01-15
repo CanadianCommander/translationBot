@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"path"
@@ -24,12 +25,14 @@ func (t TsLoader) Load(
 	translations map[string]Translation) (map[string]Translation, error) {
 
 	if t.shouldInjectTemporaryPackage(file) {
-		log.Logger.Info("Injecting temporary package to switch code to ESM module...")
-		temporaryPackage, err := t.writeTemporaryPackageFile(file)
+		log.Logger.Info("Creating temporary package environment to switch code to ESM module...")
+		tempDir, newFile, err := t.writeTemporaryPackageEnvironment(file)
 		if err != nil {
 			return nil, err
 		}
-		defer t.cleanupTemporaryPackageFile(temporaryPackage)
+		file = newFile
+
+		defer t.cleanupTemporaryPackageEnvironment(tempDir)
 	}
 
 	cmdOutput := bytes.Buffer{}
@@ -51,6 +54,7 @@ func (t TsLoader) Load(
 	}
 
 	extractTranslations(sourceLanguage, translationLanguages, language, "", jsonData, translations)
+
 	return translations, nil
 }
 
@@ -68,28 +72,43 @@ func (t TsLoader) shouldInjectTemporaryPackage(filePath string) bool {
 	return err != nil
 }
 
-// writeTemporaryPackageFile creates a temporary package.json file in the directory of the given filePath
+// writeTemporaryPackageEnvironment creates a temporary package.json file in a temporary directory
 // This file will switch the JavaScript in that folder to module packaging mode.
-func (t TsLoader) writeTemporaryPackageFile(filePath string) (*os.File, error) {
-	file, err := os.OpenFile(path.Join(path.Dir(filePath), "package.json"), os.O_CREATE|os.O_TRUNC|os.O_RDWR, 0666)
+// #### return
+// 0 - the temporary directory path
+// 1 - the modified file path that was passed in. It will not reference a temporary copy
+// 2 - error
+func (t TsLoader) writeTemporaryPackageEnvironment(filePath string) (string, string, error) {
+	tempDir, err := ioutil.TempDir("/tmp/", "jsenv")
 	if err != nil {
-		return nil, err
+		return "", "", err
 	}
 
+	file, err := os.OpenFile(path.Join(tempDir, "package.json"), os.O_CREATE|os.O_TRUNC|os.O_RDWR, 0666)
+	if err != nil {
+		return "", "", err
+	}
+	defer file.Close()
 	_, err = file.Write([]byte("{\n  \"type\": \"module\"\n}\n"))
-	return file, err
+
+	// copy translation file data in to temp dir
+	translationData, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return "", "", err
+	}
+	newFilePath := path.Join(tempDir, path.Base(filePath))
+	err = ioutil.WriteFile(newFilePath, translationData, 0666)
+	if err != nil {
+		return "", "", err
+	}
+
+	return tempDir, newFilePath, err
 }
 
-// cleanupTemporaryPackageFile deletes the temporary package file and closes its stream.
-func (t TsLoader) cleanupTemporaryPackageFile(temporaryPackage *os.File) {
-
-	err := temporaryPackage.Close()
+// cleanupTemporaryPackageFile deletes the temporary package environment.
+func (t TsLoader) cleanupTemporaryPackageEnvironment(temporaryPackageDir string) {
+	err := os.RemoveAll(temporaryPackageDir)
 	if err != nil {
-		log.Logger.Error("Error cleaning up tmp package file", err)
-	}
-
-	err = os.Remove(temporaryPackage.Name())
-	if err != nil {
-		log.Logger.Error("Error cleaning up tmp package file", err)
+		log.Logger.Errorf("Error cleaning up tmp package environment %s. - %s", temporaryPackageDir, err)
 	}
 }

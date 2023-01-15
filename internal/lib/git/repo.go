@@ -42,7 +42,7 @@ func InitializeProjectRepo(project *Project) error {
 		}
 	}
 
-	err = SwitchBranch(project, project.Branch, true)
+	err = SwitchBranch(project, project.Branch, false)
 	if err != nil {
 		log.Logger.Errorf("Could not reset project %s to default branch %s", project.Name, project.Branch)
 		return err

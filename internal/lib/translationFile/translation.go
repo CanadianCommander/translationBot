@@ -1,5 +1,11 @@
 package translationFile
 
+import (
+	"errors"
+	"fmt"
+	"golang.org/x/exp/maps"
+)
+
 //==========================================================================
 // Public
 //==========================================================================
@@ -29,6 +35,32 @@ func NewTranslation(key string, sourceValue string, supportedLangs []string, tra
 		Translations: translations,
 		Languages:    supportedLangs,
 	}
+}
+
+// Merge merges this translation with another translation
+// #### params
+// other - the translation to merge in to this one.
+func (t *Translation) Merge(other Translation) error {
+	if t.Key != other.Key {
+		return errors.New(fmt.Sprintf("Attempt to merge translations with different keys! %s %s", t.Key, other.Key))
+	}
+
+	if len(other.SourceValue) != 0 {
+		t.SourceValue = other.SourceValue
+	}
+
+	for lang, file := range other.Translations {
+		t.Translations[lang] = file
+	}
+
+	allLanguages := append(t.Languages, other.Languages...)
+	uniqueLanguages := map[string]string{}
+	for _, lang := range allLanguages {
+		uniqueLanguages[lang] = lang
+	}
+	t.Languages = maps.Values(uniqueLanguages)
+
+	return nil
 }
 
 //==========================================================================
