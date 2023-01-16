@@ -32,6 +32,19 @@ func MissingTranslations(missingTranslations []translationFile.Translation, proj
 	}
 	if len(missingTranslations) > 0 {
 		blocks = append(blocks, getMissingTranslationOutputForLangs(missingTranslations)...)
+
+		blocks = append(blocks,
+			slack.NewDividerBlock(),
+			slack.NewSectionBlock(
+				slackutil.NewTextBlock("Download this CSV file. Fill in the blanks. Then post it back to this channel, and I'll apply it for you :wink:"),
+				nil,
+				slack.NewAccessory(
+					&slack.ButtonBlockElement{
+						Type: "button",
+						Text: slackutil.NewTextBlock("CSV"),
+						URL:  fmt.Sprintf("https://%s/api/v1/project/%s/translations/missing/csv", config.Hostname, projectName),
+					}),
+			))
 	} else {
 		blocks = append(
 			blocks,
@@ -41,19 +54,6 @@ func MissingTranslations(missingTranslations []translationFile.Translation, proj
 				nil),
 		)
 	}
-
-	blocks = append(blocks,
-		slack.NewDividerBlock(),
-		slack.NewSectionBlock(
-			slackutil.NewTextBlock("Download this CSV file. Fill in the blanks. Then post it back to this channel, and I'll apply it for you :wink:"),
-			nil,
-			slack.NewAccessory(
-				&slack.ButtonBlockElement{
-					Type: "button",
-					Text: slackutil.NewTextBlock("CSV"),
-					URL:  fmt.Sprintf("https://%s/api/v1/project/%s/translations/missing/csv", config.Hostname, projectName),
-				}),
-		))
 
 	return slack.NewBlockMessage(blocks...)
 }
