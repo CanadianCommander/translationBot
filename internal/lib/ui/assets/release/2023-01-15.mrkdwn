@@ -1,0 +1,18 @@
+*Features:*
+```
+- Export to CSV option for missing translations. When viewing missing translations a new button is available at the bottom of the result list. This button lets users download the missing translations in a format COMPATIBLE WITH UPLOAD. aka,
+Download -> Fill in the blanks -> Reupload to have TranslationBot apply the changes!
+```
+
+*Improvements:*
+```
+- Git and TS/JS loader optimizations. TranslationBot is now generally faster! For example, when listing missing translations, TranslationBot is now TWICE as fast!
+- Add Dismiss button to apply translation prompt.
+- Helm chart refactored to allow users to customize TranslationBots project list. You can now specify your own values file, during install, containing a custom project list.
+```
+
+*Fixes:*
+```
+- Fix CSV_Tara_1.0 mapping loader requiring spaces after commas in CSV header. Ex "ONE, TWO, THREE" was valid but "ONE,TWO,THREE" was not. This is no longer the case.
+- Fix translation update mixing up translations in some situations. ooof.
+```

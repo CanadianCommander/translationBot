@@ -21,6 +21,10 @@ func ApplyTranslationMappingsPrompt(fileId string) slack.Message {
 			nil),
 		slack.NewActionBlock(
 			"actions",
+			slack.NewButtonBlockElement(
+				routes.ActionCancel,
+				"",
+				slackutil.NewTextBlock("Dismiss")),
 			slackutil.NewMultiProjectButtonBlockElement(
 				routes.ActionUpdateTranslations,
 				fileId,

@@ -14,7 +14,7 @@ import (
 // Public
 //==========================================================================
 
-const CsvTaraFileMagic = "^ENGLISH,\\s+FRENCH"
+const CsvTaraFileMagic = "^ENGLISH,\\s*FRENCH"
 
 type CsvTaraMappingLoader struct {
 }
@@ -38,7 +38,7 @@ func (c *CsvTaraMappingLoader) Load(fileData io.Reader) ([]translationFile.Trans
 		if err != nil {
 			return nil, err
 		} else if lenNonBlank(mapping) < len(headers) {
-			return nil, NewValidationError("one ore more CSV rows have less columns then there are headers")
+			return nil, NewValidationError("one or more CSV rows have less columns then there are headers")
 		}
 
 		translationMap := make(map[string]string)

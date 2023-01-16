@@ -31,3 +31,17 @@ func FindMissingTranslations(project *git.Project) ([]translationFile.Translatio
 
 	return missingTranslations, nil
 }
+
+// FindMissingTranslationsCSV finds missing translations in the given project. Results are returned as a CSV string
+// #### params
+// project - the project to search for missing translations.
+// #### return
+// CSV translation list. Where each translation is guaranteed to have a missing translation in at least one language.
+func FindMissingTranslationsCSV(project *git.Project) (string, error) {
+	missing, err := FindMissingTranslations(project)
+	if err != nil {
+		return "", err
+	}
+
+	return ToCSV(missing, project.SourceLanguage)
+}

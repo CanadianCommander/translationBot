@@ -8,6 +8,7 @@ import "github.com/CanadianCommander/translationBot/internal/lib/git"
 
 type Settings struct {
 	// translation bot version.
+	Hostname           string `yaml:"hostname"`
 	Version            string
 	SlackClientSecret  string `yaml:"slackClientSecret"`
 	SlackSigningSecret string `yaml:"slackSigningSecret"`

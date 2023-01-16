@@ -49,8 +49,8 @@ func (t *Translation) Merge(other Translation) error {
 		t.SourceValue = other.SourceValue
 	}
 
-	for lang, file := range other.Translations {
-		t.Translations[lang] = file
+	for lang, translation := range other.Translations {
+		t.Translations[lang] = translation
 	}
 
 	allLanguages := append(t.Languages, other.Languages...)

@@ -8,12 +8,17 @@ import (
 func BuildV1Api() *gin.Engine {
 	router := gin.Default()
 
-	v1 := router.Group("api/v1")
+	v1 := router.Group("api/v1/")
 
-	v1.Use(security.ValidateSlackRequest)
-	v1.POST("/cmd/", SlackSlashCommandHandler)
-	v1.POST("/event/", SlackEventHandler)
-	v1.POST("/action/", SlackActionHandler)
+	v1Slack := v1.Group("slack/")
+	v1Slack.Use(security.ValidateSlackRequest)
+	v1Slack.POST("/cmd/", SlackSlashCommandHandler)
+	v1Slack.POST("/event/", SlackEventHandler)
+	v1Slack.POST("/action/", SlackActionHandler)
+
+	// downloads
+	v1Project := v1.Group("/project/:project/")
+	v1Project.GET("/translations/missing/csv", MissingTranslationCSVHandler)
 
 	return router
 }

@@ -155,9 +155,9 @@ func buildMappingKeyMap(mappings []translationFile.Translation) map[string]*tran
 func buildMappingValueMap(mappings []translationFile.Translation) map[string]*translationFile.Translation {
 	mappingValueMap := make(map[string]*translationFile.Translation)
 
-	for _, mapping := range mappings {
+	for idx, mapping := range mappings {
 		if mapping.SourceValue != "" {
-			mappingValueMap[mapping.SourceValue] = &mapping
+			mappingValueMap[mapping.SourceValue] = &mappings[idx]
 		}
 	}
 

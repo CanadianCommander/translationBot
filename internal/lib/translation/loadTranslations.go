@@ -73,6 +73,7 @@ func combineTranslations(translations []map[string]translationFile.Translation) 
 				if err != nil {
 					return nil, err
 				}
+				combinedTranslations[key] = combinedTranslation
 			} else {
 				combinedTranslations[key] = trans
 			}

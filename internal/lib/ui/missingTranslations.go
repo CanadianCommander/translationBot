@@ -2,6 +2,7 @@ package ui
 
 import (
 	"fmt"
+	"github.com/CanadianCommander/translationBot/internal/lib/configuration"
 	"github.com/CanadianCommander/translationBot/internal/lib/slackutil"
 	"github.com/CanadianCommander/translationBot/internal/lib/translationFile"
 	"github.com/slack-go/slack"
@@ -18,6 +19,8 @@ import (
 // missingTranslations - a list of translations missing values for one or more languages
 // projectName - the name of the project to which the missing translations pertain
 func MissingTranslations(missingTranslations []translationFile.Translation, projectName string) slack.Message {
+	config := configuration.Get()
+
 	blocks := []slack.Block{
 		slack.NewHeaderBlock(slackutil.NewTextBlock(fmt.Sprintf("%s missing translations", projectName))),
 		slack.NewContextBlock(
@@ -38,6 +41,19 @@ func MissingTranslations(missingTranslations []translationFile.Translation, proj
 				nil),
 		)
 	}
+
+	blocks = append(blocks,
+		slack.NewDividerBlock(),
+		slack.NewSectionBlock(
+			slackutil.NewTextBlock("Download this CSV file. Fill in the blanks. Then post it back to this channel, and I'll apply it for you :wink:"),
+			nil,
+			slack.NewAccessory(
+				&slack.ButtonBlockElement{
+					Type: "button",
+					Text: slackutil.NewTextBlock("CSV"),
+					URL:  fmt.Sprintf("https://%s/api/v1/project/%s/translations/missing/csv", config.Hostname, projectName),
+				}),
+		))
 
 	return slack.NewBlockMessage(blocks...)
 }

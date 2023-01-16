@@ -21,7 +21,8 @@ func ReleaseNotes(showBackButton bool) slack.Message {
 
 	var blocks []slack.Block
 
-	blocks = append(blocks, versionBlock(config.Version, notes2023_01_08)...)
+	blocks = append(blocks, versionBlock("7a8cd2976b014b7117561879d10ec94a430f9572", notes2023_01_08)...)
+	blocks = append(blocks, versionBlock(config.Version, notes2023_01_15)...)
 
 	if showBackButton {
 		blocks = append(blocks,
@@ -39,6 +40,9 @@ func ReleaseNotes(showBackButton bool) slack.Message {
 
 //go:embed assets/release/2023-01-08.mrkdwn
 var notes2023_01_08 string
+
+//go:embed assets/release/2023-01-15.mrkdwn
+var notes2023_01_15 string
 
 // versionBlock renders blocks to display release notes for a version of TranslationBot
 func versionBlock(version string, notes string) []slack.Block {
