@@ -16,7 +16,7 @@ projects:
     translationFiles:
       english: frontend-vue/src/i18n/en-US/index.ts
       french: frontend-vue/src/i18n/fr-CA/index.ts
-    gitUsername: CanadianCommander-Work
+    gitUsername: CloudMDServiceBot
     gitPassword: <override me>
 
   snap-frontend:
@@ -29,7 +29,7 @@ projects:
       english: b2b-patient-onboarding/src/locales/en.js
       french: b2b-patient-onboarding/src/locales/fr-CA.js
       spanish: b2b-patient-onboarding/src/locales/es-US.js
-    gitUsername: CanadianCommander-Work
+    gitUsername: CloudMDServiceBot
     gitPassword: <override me>
 
   snap-backend:
@@ -41,5 +41,5 @@ projects:
       french: locales/fr-CA/translation.json
       spanish: locales/es-US/translation.json
       english: locales/en/translation.json
-    gitUsername: CanadianCommander-Work
+    gitUsername: CloudMDServiceBot
     gitPassword: <override me>
