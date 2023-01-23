@@ -135,7 +135,6 @@ func applyMappings(translations []translationFile.Translation, mappings []transl
 			}
 		}
 	}
-
 }
 
 // buildMappingsKeyMap produces a map that indexes translation mappings by translation key

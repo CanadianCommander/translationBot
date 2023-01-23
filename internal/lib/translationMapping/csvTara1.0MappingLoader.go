@@ -14,7 +14,7 @@ import (
 // Public
 //==========================================================================
 
-const CsvTaraFileMagic = "^ENGLISH,\\s*FRENCH"
+const CsvTaraFileMagic = "^\\s*ENGLISH\\s*,\\s*FRENCH"
 
 type CsvTaraMappingLoader struct {
 }

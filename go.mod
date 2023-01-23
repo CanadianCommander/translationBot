@@ -7,7 +7,7 @@ require (
 	github.com/google/go-github/v48 v48.2.0
 	github.com/slack-go/slack v0.12.1
 	go.uber.org/zap v1.24.0
-	golang.org/x/exp v0.0.0-20221217163422-3c43f8badb15
+	golang.org/x/exp v0.0.0-20230118134722-a68e582fa157
 	golang.org/x/oauth2 v0.0.0-20180821212333-d2e6202438be
 	gopkg.in/yaml.v2 v2.4.0
 )
