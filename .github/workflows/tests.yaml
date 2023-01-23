@@ -1,7 +1,0 @@
-on: push
-name: Run Tests
-
-jobs:
-  test:
-    name: Test Translation Bot
-    uses: ./.github/workflows/lib-test.yaml

@@ -20,10 +20,15 @@ jobs:
         id: tag-step
         run: echo tag=$(git rev-parse HEAD) >> $GITHUB_OUTPUT
 
+  tests:
+    name: Test Translation Bot
+    uses: ./.github/workflows/lib-test.yaml
+
   build-image:
     name: Build Image
     needs:
       - determine-tag
+      - tests
     uses: ./.github/workflows/lib-build-image.yaml
     with:
       docker-file: ./Dockerfile
@@ -36,6 +41,7 @@ jobs:
     needs:
       - build-image
       - determine-tag
+      - tests
     uses: ./.github/workflows/lib-deploy-to-cluster.yaml
     with:
       environment: prod
