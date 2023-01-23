@@ -60,7 +60,7 @@ func TestApplyMappings(t *testing.T) {
 					"french": "La Create Me",
 				}),
 				*translationFile.NewTranslation("", "Extra language", []string{"french", "spanish"}, map[string]string{
-					"spanish": "Est extra language",
+					"spanish": "Est extra languageq",
 				}),
 			},
 
