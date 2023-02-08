@@ -43,3 +43,13 @@ projects:
       english: locales/en/translation.json
     gitUsername: CloudMDServiceBot
     gitPassword: <override me>
+  myhealthaccess:
+    url: https://github.com/CloudMD-SSI/myhealthaccess.git
+    branch: dev
+    sourceLanguage: english
+    updateSourceFile: false
+    translationFiles:
+      english: client/src/locales/en.json
+      french: client/src/locales/fr.json
+    gitUsername: CloudMDServiceBot
+    gitPassword: <override me>
