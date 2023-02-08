@@ -28,7 +28,6 @@ projects:
     translationFiles:
       english: b2b-patient-onboarding/src/locales/en.js
       french: b2b-patient-onboarding/src/locales/fr-CA.js
-      spanish: b2b-patient-onboarding/src/locales/es-US.js
     gitUsername: CloudMDServiceBot
     gitPassword: <override me>
 
@@ -39,7 +38,6 @@ projects:
     updateSourceFile: false
     translationFiles:
       french: locales/fr-CA/translation.json
-      spanish: locales/es-US/translation.json
       english: locales/en/translation.json
     gitUsername: CloudMDServiceBot
     gitPassword: <override me>
