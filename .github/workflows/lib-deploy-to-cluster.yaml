@@ -67,4 +67,5 @@ jobs:
           --set projects.kii.gitPassword=${{ secrets.GIT_PASSWORD }} \
           --set projects.snap-frontend.gitPassword=${{ secrets.GIT_PASSWORD }} \
           --set projects.snap-backend.gitPassword=${{ secrets.GIT_PASSWORD }} \
+          --set projects.myhealthaccess.gitPassword=${{ secrets.GIT_PASSWORD }} \
           tb ./kubernetes/helm/
