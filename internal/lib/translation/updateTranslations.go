@@ -67,7 +67,7 @@ func UpdateTranslationsFromSlackFile(slackFileId string, project *git.Project) (
 // translations - the translations to apply to the project
 // #### return
 // branch under which the applied changes can be found.
-func updateTranslationFiles(project *git.Project, translations map[string]translationFile.Translation) (string, error) {
+func updateTranslationFiles(project *git.Project, translations map[string]*translationFile.Translation) (string, error) {
 	config := configuration.Get()
 
 	newBranch := git.GenerateNewBranchName()
@@ -119,7 +119,7 @@ func updateTranslationFiles(project *git.Project, translations map[string]transl
 // #### params
 // translations - the translation set on which the mappings will be applied
 // mappings - the mappings to apply to the translation set.
-func applyMappings(translations []translationFile.Translation, mappings []translationFile.Translation) {
+func applyMappings(translations []*translationFile.Translation, mappings []translationFile.Translation) {
 	mappingKeyMap := buildMappingKeyMap(mappings)
 	mappingValueMap := buildMappingValueMap(mappings)
 
@@ -127,11 +127,11 @@ func applyMappings(translations []translationFile.Translation, mappings []transl
 		mapping, exists := mappingKeyMap[translation.Key]
 		if exists {
 			translation.SourceValue = mapping.SourceValue
-			mergeTranslationsWithMappings(&translation, mapping)
+			mergeTranslationsWithMappings(translation, mapping)
 		} else {
 			mapping, exists = mappingValueMap[translation.SourceValue]
 			if exists {
-				mergeTranslationsWithMappings(&translation, mapping)
+				mergeTranslationsWithMappings(translation, mapping)
 			}
 		}
 	}

@@ -18,7 +18,7 @@ import (
 // #### params
 // missingTranslations - a list of translations missing values for one or more languages
 // projectName - the name of the project to which the missing translations pertain
-func MissingTranslations(missingTranslations []translationFile.Translation, projectName string) slack.Message {
+func MissingTranslations(missingTranslations []*translationFile.Translation, projectName string) slack.Message {
 	config := configuration.Get()
 
 	blocks := []slack.Block{
@@ -63,7 +63,7 @@ func MissingTranslations(missingTranslations []translationFile.Translation, proj
 //==========================================================================
 
 // getMissingTranslationOutputForLangs gets missing translation string output messages by language
-func getMissingTranslationOutputForLangs(missingTranslations []translationFile.Translation) []slack.Block {
+func getMissingTranslationOutputForLangs(missingTranslations []*translationFile.Translation) []slack.Block {
 	// lang -> output text
 	missingTranslationOutput := make(map[string]string)
 
@@ -75,7 +75,7 @@ func getMissingTranslationOutputForLangs(missingTranslations []translationFile.T
 				if !exists {
 					output = ""
 				}
-				missingTranslationOutput[missingLang] = output + formatMissingTranslationLine(&translation)
+				missingTranslationOutput[missingLang] = output + formatMissingTranslationLine(translation)
 			}
 		}
 	}

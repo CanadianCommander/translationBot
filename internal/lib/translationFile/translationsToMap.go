@@ -17,7 +17,7 @@ import (
 // isSourceLang - if true lang will be treated as the source lang. Different extraction logic will apply.
 // #### return
 // a map containing a JSON like representation of the data. Each value will be either string or map[string]interface{}
-func translationsToMap(lang string, translationMap map[string]Translation, isSourceLang bool) map[string]interface{} {
+func translationsToMap(lang string, translationMap map[string]*Translation, isSourceLang bool) map[string]interface{} {
 
 	output := make(map[string]interface{})
 	translations := maps.Values(translationMap)
@@ -53,7 +53,7 @@ func translationsToMap(lang string, translationMap map[string]Translation, isSou
 }
 
 // extractValue from the translation for the given lang. Returning the value and if that value exists or not.
-func extractValue(lang string, translation Translation, isSourceLang bool) (string, bool) {
+func extractValue(lang string, translation *Translation, isSourceLang bool) (string, bool) {
 	if isSourceLang {
 		return translation.SourceValue, true
 	} else {

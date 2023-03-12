@@ -3,7 +3,7 @@ package translationFile
 import "testing"
 
 type mapperTestInput struct {
-	translations map[string]Translation
+	translations map[string]*Translation
 	englishOk    func(rawMap map[string]interface{}) bool
 	frenchOk     func(rawMap map[string]interface{}) bool
 }
@@ -12,7 +12,7 @@ func TestTranslationsToMap(t *testing.T) {
 
 	inputs := []mapperTestInput{
 		{
-			translations: map[string]Translation{
+			translations: map[string]*Translation{
 				"foo": {
 					Key:         "foo",
 					SourceValue: "Bar",

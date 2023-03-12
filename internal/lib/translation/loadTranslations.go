@@ -15,14 +15,14 @@ import (
 // LoadTranslations - load translations for the given project
 // #### params
 // project - the project whose translations will be loaded
-func LoadTranslations(project *git.Project) (map[string]translationFile.Translation, error) {
+func LoadTranslations(project *git.Project) (map[string]*translationFile.Translation, error) {
 
 	err := git.InitializeProjectRepo(project)
 	if err != nil {
 		return nil, err
 	}
 
-	translationOutputs := make(chan map[string]translationFile.Translation, len(project.TranslationFiles))
+	translationOutputs := make(chan map[string]*translationFile.Translation, len(project.TranslationFiles))
 	errorOutputs := make(chan error, len(project.TranslationFiles))
 	workGroup := sync.WaitGroup{}
 
@@ -50,7 +50,7 @@ func LoadTranslations(project *git.Project) (map[string]translationFile.Translat
 	}
 
 	// combine outputs
-	var allTranslations []map[string]translationFile.Translation
+	var allTranslations []map[string]*translationFile.Translation
 	for translations := range translationOutputs {
 		allTranslations = append(allTranslations, translations)
 	}
@@ -61,15 +61,15 @@ func LoadTranslations(project *git.Project) (map[string]translationFile.Translat
 // combineTranslations combines multiple translation maps in to one.
 // #### params
 // translations - translation list to combine
-func combineTranslations(translations []map[string]translationFile.Translation) (map[string]translationFile.Translation, error) {
-	combinedTranslations := map[string]translationFile.Translation{}
+func combineTranslations(translations []map[string]*translationFile.Translation) (map[string]*translationFile.Translation, error) {
+	combinedTranslations := map[string]*translationFile.Translation{}
 
 	for _, translationMap := range translations {
 		for key, trans := range translationMap {
 			combinedTranslation, exists := combinedTranslations[key]
 
 			if exists {
-				err := combinedTranslation.Merge(trans)
+				err := combinedTranslation.Merge(*trans)
 				if err != nil {
 					return nil, err
 				}
@@ -98,10 +98,10 @@ func translationLoadRoutine(
 	sourceLang string,
 	translationLanguages []string,
 	workGroup *sync.WaitGroup,
-	output chan<- map[string]translationFile.Translation,
+	output chan<- map[string]*translationFile.Translation,
 	errChan chan<- error) {
 	defer workGroup.Done()
-	translations := make(map[string]translationFile.Translation)
+	translations := make(map[string]*translationFile.Translation)
 
 	loader := translationFile.GetLoaderForFile(file)
 	if loader == nil {

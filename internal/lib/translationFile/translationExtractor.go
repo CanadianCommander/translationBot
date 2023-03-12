@@ -23,7 +23,7 @@ func extractTranslations(
 	lang string,
 	keypath string,
 	translationData map[string]interface{},
-	translations map[string]Translation) {
+	translations map[string]*Translation) {
 
 	for key, val := range translationData {
 		switch val.(type) {
@@ -50,7 +50,7 @@ func extractTranslations(
 			} else {
 				if lang == sourceLanguage {
 					translations[formatKeypath(keypath, key)] =
-						*NewTranslation(
+						NewTranslation(
 							formatKeypath(keypath, key),
 							strings.Trim(val.(string), " "),
 							translationLanguages,
@@ -59,7 +59,7 @@ func extractTranslations(
 					translationMap := map[string]string{lang: strings.Trim(val.(string), " ")}
 
 					translations[formatKeypath(keypath, key)] =
-						*NewTranslation(
+						NewTranslation(
 							formatKeypath(keypath, key),
 							"",
 							translationLanguages,

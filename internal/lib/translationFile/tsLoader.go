@@ -22,7 +22,7 @@ func (t TsLoader) Load(
 	translationLanguages []string,
 	language string,
 	file string,
-	translations map[string]Translation) (map[string]Translation, error) {
+	translations map[string]*Translation) (map[string]*Translation, error) {
 
 	if t.shouldInjectTemporaryPackage(file) {
 		log.Logger.Info("Creating temporary package environment to switch code to ESM module...")

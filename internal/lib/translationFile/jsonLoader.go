@@ -18,8 +18,8 @@ func (j *JsonLoader) Load(
 	translationLanguages []string,
 	language string,
 	file string,
-	translations map[string]Translation,
-) (map[string]Translation, error) {
+	translations map[string]*Translation,
+) (map[string]*Translation, error) {
 	rawJson, err := os.ReadFile(file)
 	if err != nil {
 		return nil, err

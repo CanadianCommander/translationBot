@@ -21,7 +21,7 @@ import (
 // SOURCE, LANG1, LANG2, LANG3
 // s_VAL, L1_VAL, L2_VAL, L3_VAL...
 // ....
-func ToCSV(translations []translationFile.Translation, sourceLang string) (string, error) {
+func ToCSV(translations []*translationFile.Translation, sourceLang string) (string, error) {
 	if len(translations) == 0 {
 		return "", errors.New("translation list cannot be empty when converting to CSV")
 	}

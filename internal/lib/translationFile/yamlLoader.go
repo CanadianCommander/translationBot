@@ -18,7 +18,7 @@ func (y *YamlLoader) Load(
 	translationLanguages []string,
 	language string,
 	file string,
-	translations map[string]Translation) (map[string]Translation, error) {
+	translations map[string]*Translation) (map[string]*Translation, error) {
 
 	yamlRaw, err := os.ReadFile(file)
 	if err != nil {

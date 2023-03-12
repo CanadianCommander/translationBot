@@ -5,7 +5,7 @@ import "testing"
 type extractorTestInput struct {
 	rawStructInput       map[string]interface{}
 	rawStructInputFrench map[string]interface{}
-	resultOk             func(tm map[string]Translation) bool
+	resultOk             func(tm map[string]*Translation) bool
 }
 
 func TestExtractTranslations(t *testing.T) {
@@ -16,7 +16,7 @@ func TestExtractTranslations(t *testing.T) {
 				"card":   "This is a card or something",
 				"police": "Frank Drebin",
 			},
-			resultOk: func(tm map[string]Translation) bool {
+			resultOk: func(tm map[string]*Translation) bool {
 				return tm["card"].SourceValue == "This is a card or something" &&
 					tm["police"].SourceValue == "Frank Drebin"
 			},
@@ -28,7 +28,7 @@ func TestExtractTranslations(t *testing.T) {
 					"bob": "Ross",
 				},
 			},
-			resultOk: func(tm map[string]Translation) bool {
+			resultOk: func(tm map[string]*Translation) bool {
 				return tm["card"].SourceValue == "This is a card or something" &&
 					tm["nested.bob"].SourceValue == "Ross"
 			},
@@ -52,7 +52,7 @@ func TestExtractTranslations(t *testing.T) {
 					},
 				},
 			},
-			resultOk: func(tm map[string]Translation) bool {
+			resultOk: func(tm map[string]*Translation) bool {
 				return tm["card"].SourceValue == "This is a card or something" &&
 					tm["card"].Translations["french"] == "La This is a card or something" &&
 					tm["nested.bob"].SourceValue == "Ross" &&
@@ -64,7 +64,7 @@ func TestExtractTranslations(t *testing.T) {
 	}
 
 	for i, input := range inputs {
-		translations := make(map[string]Translation)
+		translations := make(map[string]*Translation)
 
 		if input.rawStructInputFrench != nil {
 			// reverse loading has been an issue. Load French first to test for this edge case.

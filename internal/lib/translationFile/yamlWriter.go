@@ -16,7 +16,7 @@ import (
 type YamlWriter struct {
 }
 
-func (yamlWriter *YamlWriter) Write(filePath string, lang string, sourceLanguage string, translations map[string]Translation) error {
+func (yamlWriter *YamlWriter) Write(filePath string, lang string, sourceLanguage string, translations map[string]*Translation) error {
 	if !yamlWriter.CanWrite(filePath) {
 		return errors.New(fmt.Sprintf("translationFile.YamlWriter does not support this type of file %s", filePath))
 	}

@@ -7,18 +7,18 @@ import (
 )
 
 type updateTranslationTestInput struct {
-	translations []translationFile.Translation
+	translations []*translationFile.Translation
 	mappings     []translationFile.Translation
-	resultOk     func(translations []translationFile.Translation) bool
+	resultOk     func(translations []*translationFile.Translation) bool
 }
 
 func TestApplyMappings(t *testing.T) {
 
 	inputs := []updateTranslationTestInput{
 		{
-			translations: []translationFile.Translation{
-				*translationFile.NewTranslation("create.me", "Create Me", []string{"french"}, map[string]string{}),
-				*translationFile.NewTranslation("update.me", "Update Me", []string{"french"}, map[string]string{
+			translations: []*translationFile.Translation{
+				translationFile.NewTranslation("create.me", "Create Me", []string{"french"}, map[string]string{}),
+				translationFile.NewTranslation("update.me", "Update Me", []string{"french"}, map[string]string{
 					"french": "not right",
 				}),
 			},
@@ -31,9 +31,9 @@ func TestApplyMappings(t *testing.T) {
 				}),
 			},
 
-			resultOk: func(translations []translationFile.Translation) bool {
-				idxCreate := slices.IndexFunc(translations, func(trans translationFile.Translation) bool { return trans.SourceValue == "Create Me" })
-				idxUpdate := slices.IndexFunc(translations, func(trans translationFile.Translation) bool { return trans.SourceValue == "Update Me" })
+			resultOk: func(translations []*translationFile.Translation) bool {
+				idxCreate := slices.IndexFunc(translations, func(trans *translationFile.Translation) bool { return trans.SourceValue == "Create Me" })
+				idxUpdate := slices.IndexFunc(translations, func(trans *translationFile.Translation) bool { return trans.SourceValue == "Update Me" })
 
 				return idxCreate != -1 &&
 					idxUpdate != -1 &&
@@ -42,16 +42,16 @@ func TestApplyMappings(t *testing.T) {
 			},
 		},
 		{
-			translations: []translationFile.Translation{
-				*translationFile.NewTranslation("create.me", "Create Me", []string{"french"}, map[string]string{}),
-				*translationFile.NewTranslation("extra.lang", "Extra language", []string{"french", "spanish"}, map[string]string{
+			translations: []*translationFile.Translation{
+				translationFile.NewTranslation("create.me", "Create Me", []string{"french"}, map[string]string{}),
+				translationFile.NewTranslation("extra.lang", "Extra language", []string{"french", "spanish"}, map[string]string{
 					"french": "La Extra",
 				}),
-				*translationFile.NewTranslation("extra.lang.keep", "Extra language. Keep it", []string{"french", "spanish"}, map[string]string{
+				translationFile.NewTranslation("extra.lang.keep", "Extra language. Keep it", []string{"french", "spanish"}, map[string]string{
 					"french":  "La Extra",
 					"spanish": "Don't change",
 				}),
-				*translationFile.NewTranslation("dont.delete.me", "Keep Me", []string{"french"}, map[string]string{
+				translationFile.NewTranslation("dont.delete.me", "Keep Me", []string{"french"}, map[string]string{
 					"french": "La Keep Me",
 				}),
 			},
@@ -64,11 +64,11 @@ func TestApplyMappings(t *testing.T) {
 				}),
 			},
 
-			resultOk: func(translations []translationFile.Translation) bool {
-				idxCreate := slices.IndexFunc(translations, func(trans translationFile.Translation) bool { return trans.SourceValue == "Create Me" })
-				idxExtraUpdate := slices.IndexFunc(translations, func(trans translationFile.Translation) bool { return trans.SourceValue == "Extra language" })
-				idxKeepMe := slices.IndexFunc(translations, func(trans translationFile.Translation) bool { return trans.SourceValue == "Keep Me" })
-				idxExtraLangKeepMe := slices.IndexFunc(translations, func(trans translationFile.Translation) bool { return trans.SourceValue == "Extra language. Keep it" })
+			resultOk: func(translations []*translationFile.Translation) bool {
+				idxCreate := slices.IndexFunc(translations, func(trans *translationFile.Translation) bool { return trans.SourceValue == "Create Me" })
+				idxExtraUpdate := slices.IndexFunc(translations, func(trans *translationFile.Translation) bool { return trans.SourceValue == "Extra language" })
+				idxKeepMe := slices.IndexFunc(translations, func(trans *translationFile.Translation) bool { return trans.SourceValue == "Keep Me" })
+				idxExtraLangKeepMe := slices.IndexFunc(translations, func(trans *translationFile.Translation) bool { return trans.SourceValue == "Extra language. Keep it" })
 
 				return idxCreate != -1 &&
 					idxExtraUpdate != -1 &&

@@ -18,8 +18,8 @@ type Loader interface {
 		translationLanguages []string,
 		language string,
 		file string,
-		translations map[string]Translation,
-	) (map[string]Translation, error)
+		translations map[string]*Translation,
+	) (map[string]*Translation, error)
 
 	// CanLoad checks if this loader can load the specified file
 	CanLoad(filePath string) bool

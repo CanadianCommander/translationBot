@@ -50,6 +50,7 @@ func GetMapperForSlackFile(fileId string) (MappingLoader, error) {
 // available mappers
 var mappers = []MappingLoader{
 	&CsvTaraMappingLoader{},
+	&CsvKeyedTaraMappingLoader{},
 }
 
 // readStartOfFile to allow for file magic checking. Reads up to 128KB
