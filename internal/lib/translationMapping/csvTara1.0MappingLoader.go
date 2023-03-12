@@ -37,13 +37,15 @@ func (c *CsvTaraMappingLoader) Load(fileData io.Reader) ([]translationFile.Trans
 	for mapping, err := csvReader.Read(); mapping != nil; mapping, err = csvReader.Read() {
 		if err != nil {
 			return nil, err
-		} else if lenNonBlank(mapping) < len(headers) {
-			return nil, NewValidationError("one or more CSV rows have less columns then there are headers")
 		}
 
 		translationMap := make(map[string]string)
 		for idx, lang := range headers[1:] {
-			translationMap[lang] = strings.Trim(mapping[idx+1], " ")
+			if idx >= len(mapping) {
+				translationMap[lang] = ""
+			} else {
+				translationMap[lang] = strings.Trim(mapping[idx+1], " ")
+			}
 		}
 
 		mappings = append(

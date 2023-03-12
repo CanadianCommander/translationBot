@@ -53,10 +53,24 @@ func TestCsvTaraMappingLoader_Load(t *testing.T) {
 			FileData: testTranslationFile,
 			resultOk: func(tm []translationFile.Translation, err error) bool {
 				translationIndex := slices.IndexFunc(tm, func(t translationFile.Translation) bool { return t.SourceValue == "Add New Card" })
-
 				return len(tm) == 826 &&
 					tm[translationIndex].Translations["french"] == "Ajoutez une nouvelle carte" &&
 					err == nil
+			},
+		},
+		{
+			FileData: "ENGLISH,FRENCH\n english, \n english, french",
+			resultOk: func(tm []translationFile.Translation, err error) bool {
+				return len(tm) == 2 &&
+					tm[0].SourceValue == "english" &&
+					tm[0].Translations["french"] == "" &&
+					err == nil
+			},
+		},
+		{
+			FileData: "ENGLISH,FRENCH\n english, to, long, line \n english, french",
+			resultOk: func(tm []translationFile.Translation, err error) bool {
+				return err != nil
 			},
 		},
 	}
