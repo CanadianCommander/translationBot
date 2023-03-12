@@ -32,7 +32,7 @@ func MissingTranslationCSVHandler(gin *gin.Context) {
 			responseWriter.Header().Add("Content-Type", "text/csv")
 			responseWriter.Header().Add(
 				"Content-Disposition",
-				fmt.Sprintf("attachment; filename=missing_translations_%s", time.Now().Format("2006-01-02")))
+				fmt.Sprintf("attachment; filename=missing_translations_%s.csv", time.Now().Format("2006-01-02")))
 
 			_, err = responseWriter.Write([]byte(csvData))
 			if err != nil {
