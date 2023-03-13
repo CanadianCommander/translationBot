@@ -21,7 +21,7 @@ func (yamlWriter *YamlWriter) Write(filePath string, lang string, sourceLanguage
 		return errors.New(fmt.Sprintf("translationFile.YamlWriter does not support this type of file %s", filePath))
 	}
 
-	rawTranslations := translationsToMap(lang, translations, lang == sourceLanguage)
+	rawTranslations := translationsToMapSlice(lang, translations, lang == sourceLanguage)
 
 	yamlStr, err := yaml.Marshal(rawTranslations)
 	if err != nil {

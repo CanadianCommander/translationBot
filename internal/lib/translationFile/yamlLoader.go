@@ -25,13 +25,13 @@ func (y *YamlLoader) Load(
 		return nil, err
 	}
 
-	yamlData := make(map[string]interface{})
-	err = yaml.Unmarshal(yamlRaw, yamlData)
+	var yamlData yaml.MapSlice = make([]yaml.MapItem, 0)
+	err = yaml.Unmarshal(yamlRaw, &yamlData)
 	if err != nil {
 		return nil, err
 	}
 
-	extractTranslations(
+	extractTranslationsMapSlice(
 		sourceLanguage,
 		translationLanguages,
 		language,

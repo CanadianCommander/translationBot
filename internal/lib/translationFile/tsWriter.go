@@ -2,10 +2,10 @@ package translationFile
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
+	"gopkg.in/yaml.v2"
 	"os"
 	"os/exec"
 	"path"
@@ -23,19 +23,19 @@ func (tsWriter *TsWriter) Write(filePath string, lang string, sourceLanguage str
 		return errors.New(fmt.Sprintf("translationFile.TsWriter does not support this type of file %s", filePath))
 	}
 
-	rawTranslations := translationsToMap(lang, translations, lang == sourceLanguage)
+	rawTranslations := translationsToMapSlice(lang, translations, lang == sourceLanguage)
 
-	jsonStr, err := json.Marshal(rawTranslations)
+	yamlStr, err := yaml.Marshal(rawTranslations)
 	if err != nil {
 		log.Logger.Error("Error Marshaling translation JSON during translation file write, ", err)
 		return err
 	}
 
 	// write to ts file
-	inputJsonBuffer := bytes.NewBuffer(jsonStr)
-	cmd := exec.Command("yarn", "--silent", "run", "fromJson", filePath)
+	inputJsonBuffer := bytes.NewBuffer(yamlStr)
+	cmd := exec.Command("yarn", "--silent", "run", "fromYaml", filePath)
 	cwd, _ := os.Getwd()
-	cmd.Dir = path.Join(cwd, "cmd/tsJson/")
+	cmd.Dir = path.Join(cwd, "cmd/tsYaml/")
 	cmd.Stdin = inputJsonBuffer
 	if out, err := cmd.CombinedOutput(); err != nil {
 		log.Logger.Error("Error while running ", cmd.String())

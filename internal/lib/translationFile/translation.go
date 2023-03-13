@@ -13,6 +13,8 @@ import (
 type Translation struct {
 	Key         string
 	SourceValue string
+	// In what order does this translation appear in the file it was loaded from.
+	SourceLangOrder uint
 
 	// language -> translation of source value
 	Translations map[string]string
@@ -37,6 +39,21 @@ func NewTranslation(key string, sourceValue string, supportedLangs []string, tra
 	}
 }
 
+// NewTranslationOrdered is just like NewTranslation but also lets you specify the oder in which the translation
+// appears in the original file. This is important when you want to save back to the original without reordering things.
+// #### params
+// key - translation file key
+// sourceValue - the source value for this translation, usually the English version
+// supportedLangs - all languages supported (master lanaguage list)
+// translations... - one or translation mappings. lang -> translation
+// order - the order of appearance of this translation in the source file.
+func NewTranslationOrdered(key string, sourceValue string, supportedLangs []string, translations map[string]string, order uint) *Translation {
+	trans := NewTranslation(key, sourceValue, supportedLangs, translations)
+	trans.SourceLangOrder = order
+
+	return trans
+}
+
 // Merge merges this translation with another translation
 // #### params
 // other - the translation to merge in to this one.
@@ -47,6 +64,7 @@ func (t *Translation) Merge(other Translation) error {
 
 	if len(other.SourceValue) != 0 {
 		t.SourceValue = other.SourceValue
+		t.SourceLangOrder = other.SourceLangOrder
 	}
 
 	for lang, translation := range other.Translations {

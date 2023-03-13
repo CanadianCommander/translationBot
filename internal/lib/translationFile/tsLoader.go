@@ -2,8 +2,8 @@ package translationFile
 
 import (
 	"bytes"
-	"encoding/json"
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
+	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -37,9 +37,9 @@ func (t TsLoader) Load(
 
 	cmdOutput := bytes.Buffer{}
 	cmdErrorOut := bytes.Buffer{}
-	cmd := exec.Command("yarn", "--silent", "run", "toJson", file)
+	cmd := exec.Command("yarn", "--silent", "run", "toYaml", file)
 	cwd, _ := os.Getwd()
-	cmd.Dir = path.Join(cwd, "cmd/tsJson/")
+	cmd.Dir = path.Join(cwd, "cmd/tsYaml/")
 	cmd.Stdout = &cmdOutput
 	cmd.Stderr = &cmdErrorOut
 	if err := cmd.Run(); err != nil {
@@ -48,12 +48,12 @@ func (t TsLoader) Load(
 		return nil, err
 	}
 
-	jsonData := make(map[string]interface{})
-	if err := json.Unmarshal(cmdOutput.Bytes(), &jsonData); err != nil {
+	var yamlData yaml.MapSlice = make([]yaml.MapItem, 0)
+	if err := yaml.Unmarshal(cmdOutput.Bytes(), &yamlData); err != nil {
 		return nil, err
 	}
 
-	extractTranslations(sourceLanguage, translationLanguages, language, "", jsonData, translations)
+	extractTranslationsMapSlice(sourceLanguage, translationLanguages, language, "", yamlData, translations)
 
 	return translations, nil
 }
