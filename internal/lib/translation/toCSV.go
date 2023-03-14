@@ -53,6 +53,11 @@ func ToCSV(translations []*translationFile.Translation, sourceLang string) (stri
 
 	for _, trans := range translations {
 
+		// if a translation does not appear in the source file ignore it in CSV output
+		if trans.SourceValue == "" {
+			continue
+		}
+
 		outputs := []string{trans.Key}
 		for _, lang := range allLanguages {
 			if lang == sourceLang {
