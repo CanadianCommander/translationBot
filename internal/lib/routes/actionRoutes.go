@@ -11,6 +11,7 @@ const (
 	ActionIndex                   = "Index"
 	ActionListProjects            = "ListProjects"
 	ActionListMissingTranslations = "ListMissingTranslations"
+	ActionListAllTranslations     = "ActionListAllTranslations"
 	ActionUpdateTranslations      = "UpdateTranslations"
 	ActionReleaseNotes            = "ReleaseNotes"
 )

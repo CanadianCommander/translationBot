@@ -55,6 +55,8 @@ func dispatchAction(interactionCallback *slack.InteractionCallback, block *slack
 		err = listProjects(interactionCallback)
 	case routes.ActionListMissingTranslations:
 		err = ListMissingTranslations(interactionCallback, block)
+	case routes.ActionListAllTranslations:
+		err = ListAllTranslations(interactionCallback, block)
 	case routes.ActionUpdateTranslations:
 		err = UpdateTranslations(interactionCallback, block)
 	case routes.ActionReleaseNotes:

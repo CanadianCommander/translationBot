@@ -34,7 +34,7 @@ func allTranslations(slashCommand *slack.SlashCommand, args []string) error {
 	}
 	defer project.Unlock()
 
-	response := ui.CsvDownload(project.Name, "translations/csv")
+	response := ui.CsvDownload(project.Name, fmt.Sprintf("Click hear to download the complete translation set for %s", project.Name), "translations/csv")
 	_, _, err := slackutil.Api.PostMessage(slashCommand.ChannelID, slackutil.SlackMessageToMsgOption(response))
 	if err != nil {
 		return err
