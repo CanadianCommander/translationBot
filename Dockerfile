@@ -19,6 +19,8 @@ RUN apk add git bash
 
 # install TS components
 RUN cd /var/source/cmd/tsJson && \
+    yarn install \
+RUN cd /var/source/cmd/tsYaml && \
     yarn install
 
 # setup git
