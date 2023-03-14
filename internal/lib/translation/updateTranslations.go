@@ -143,7 +143,8 @@ func buildMappingKeyMap(mappings []translationFile.Translation) map[string]*tran
 
 	for _, mapping := range mappings {
 		if mapping.Key != "" {
-			mappingKeyMap[mapping.Key] = &mapping
+			mappingCpy := mapping
+			mappingKeyMap[mapping.Key] = &mappingCpy
 		}
 	}
 
@@ -169,6 +170,8 @@ func buildMappingValueMap(mappings []translationFile.Translation) map[string]*tr
 // mapping - the mapping (updates) to apply
 func mergeTranslationsWithMappings(translation *translationFile.Translation, mapping *translationFile.Translation) {
 	for lang, value := range mapping.Translations {
-		translation.Translations[lang] = value
+		if value != "" {
+			translation.Translations[lang] = value
+		}
 	}
 }

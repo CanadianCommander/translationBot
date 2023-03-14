@@ -5,6 +5,7 @@ import (
 	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"github.com/CanadianCommander/translationBot/internal/lib/translationFile"
+	"golang.org/x/exp/maps"
 	"sync"
 )
 
@@ -56,6 +57,20 @@ func LoadTranslations(project *git.Project) (map[string]*translationFile.Transla
 	}
 
 	return combineTranslations(allTranslations)
+}
+
+// LoadTranslationsAsCSV loads all translations and outputs them as a CSV.
+// #### params
+// project - the project to search for missing translations.
+// #### return
+// CSV translation list.
+func LoadTranslationsAsCSV(project *git.Project) (string, error) {
+	translations, err := LoadTranslations(project)
+	if err != nil {
+		return "", err
+	}
+
+	return ToCSV(maps.Values(translations), project.SourceLanguage)
 }
 
 // combineTranslations combines multiple translation maps in to one.

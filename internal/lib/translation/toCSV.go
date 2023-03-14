@@ -18,13 +18,18 @@ import (
 // sourceLang - the source language
 // #### return
 // string of the format CSV format
-// SOURCE, LANG1, LANG2, LANG3
-// s_VAL, L1_VAL, L2_VAL, L3_VAL...
+// KEY, SOURCE, LANG1, LANG2, LANG3
+// KEY, S_VAL, L1_VAL, L2_VAL, L3_VAL...
 // ....
 func ToCSV(translations []*translationFile.Translation, sourceLang string) (string, error) {
 	if len(translations) == 0 {
 		return "", errors.New("translation list cannot be empty when converting to CSV")
 	}
+
+	// sort alphabetically by keypath
+	sort.Slice(translations, func(i int, j int) bool {
+		return strings.Compare(translations[i].Key, translations[j].Key) < 0
+	})
 
 	firstTranslation := translations[0]
 	stringBuilder := strings.Builder{}
@@ -35,7 +40,7 @@ func ToCSV(translations []*translationFile.Translation, sourceLang string) (stri
 	sort.Strings(translationLanguages)
 	allLanguages = append(allLanguages, translationLanguages...)
 
-	var headers []string
+	headers := []string{"KEY"}
 	headers = append(headers, allLanguages...)
 	for i, header := range headers {
 		headers[i] = strings.ToUpper(header)
@@ -48,7 +53,7 @@ func ToCSV(translations []*translationFile.Translation, sourceLang string) (stri
 
 	for _, trans := range translations {
 
-		var outputs []string
+		outputs := []string{trans.Key}
 		for _, lang := range allLanguages {
 			if lang == sourceLang {
 				outputs = append(outputs, trans.SourceValue)
