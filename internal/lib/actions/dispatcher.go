@@ -61,6 +61,8 @@ func dispatchAction(interactionCallback *slack.InteractionCallback, block *slack
 		err = UpdateTranslations(interactionCallback, block)
 	case routes.ActionReleaseNotes:
 		err = simpleAction(interactionCallback, ui.ReleaseNotes(true))
+	case routes.ActionReleaseNotesFull:
+		err = simpleAction(interactionCallback, ui.FullReleaseNotes(true))
 	}
 	log.Logger.Infof("%s handler completed in %dms", block.ActionID, time.Now().Sub(startTime).Milliseconds())
 

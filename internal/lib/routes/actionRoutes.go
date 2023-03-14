@@ -14,4 +14,5 @@ const (
 	ActionListAllTranslations     = "ActionListAllTranslations"
 	ActionUpdateTranslations      = "UpdateTranslations"
 	ActionReleaseNotes            = "ReleaseNotes"
+	ActionReleaseNotesFull        = "ReleaseNotesFull"
 )

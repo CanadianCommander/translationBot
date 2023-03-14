@@ -1,0 +1,18 @@
+*Features:*
+```
+- New full translation export feature! This feature allows you to download a complete list of text strings in the project. If you modify and re-upload the CSV any changes made will be applied to the project. Including in the source langauge (English most of the time), assuming source file update is enabled.
+
+- New mapping handler "CSV_Keyed_Tara_1.0" which handles mapping files similar to "CSV_Tara_1.0" but these files contain keys as well as the text values. i.e. KEY, ENGLISH, FRENCH, ....
+```
+
+*Improvements:*
+```
+- Source file update enabled for all CloudMD projects.
+
+- When updating source translation file, the layout of the file is now maintained for all file types except JSON.
+```
+
+*Fixes:*
+```
+- Fix missing file extension on CSV downloads. Download file now correctly ends in .csv
+```
