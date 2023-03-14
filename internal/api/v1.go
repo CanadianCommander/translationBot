@@ -19,6 +19,7 @@ func BuildV1Api() *gin.Engine {
 	// downloads
 	v1Project := v1.Group("/project/:project/")
 	v1Project.GET("/translations/missing/csv", MissingTranslationCSVHandler)
+	v1Project.GET("/translations/csv", TranslationCSVHandler)
 
 	return router
 }
