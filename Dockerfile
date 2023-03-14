@@ -13,6 +13,7 @@ WORKDIR /var/source
 
 COPY --from=phase-0 /var/source/tb /var/source/tb
 COPY --from=phase-0 /var/source/cmd/tsJson /var/source/cmd/tsJson
+COPY --from=phase-0 /var/source/cmd/tsYaml /var/source/cmd/tsYaml
 
 RUN apk add git bash
 
