@@ -33,7 +33,7 @@ func SlackEventHandler(gin *gin.Context) {
 	if event.Type == slackevents.URLVerification {
 		handleUrlVerification(gin, rawBody)
 	} else {
-		events.Dispatch(&event)
+		go events.Dispatch(&event)
 		gin.Status(http.StatusOK)
 	}
 }
