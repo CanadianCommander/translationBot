@@ -2,3 +2,5 @@
 /tb
 /config/config.yaml
 /.repo
+.yarn
+node_modules
