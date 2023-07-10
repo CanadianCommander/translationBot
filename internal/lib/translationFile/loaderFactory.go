@@ -26,4 +26,5 @@ var loaders = []Loader{
 	&JsonLoader{},
 	&YamlLoader{},
 	&TsLoader{},
+	&PropertiesFileLoader{},
 }

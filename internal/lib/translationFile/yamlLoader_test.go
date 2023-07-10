@@ -41,6 +41,6 @@ func TestYamlLoader_Load(t *testing.T) {
 	}
 
 	if len(translations) != 5 {
-		t.Fatalf("Expected 3 translations")
+		t.Fatalf("Expected 5 translations")
 	}
 }

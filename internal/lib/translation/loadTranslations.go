@@ -121,17 +121,18 @@ func translationLoadRoutine(
 	loader := translationFile.GetLoaderForFile(file)
 	if loader == nil {
 		errChan <- errors.New("Could not find translation loader to handle file " + file)
-	}
+	} else {
 
-	_, err := loader.Load(
-		sourceLang,
-		translationLanguages,
-		lang,
-		file,
-		translations)
-	if err != nil {
-		errChan <- err
-	}
+		_, err := loader.Load(
+			sourceLang,
+			translationLanguages,
+			lang,
+			file,
+			translations)
+		if err != nil {
+			errChan <- err
+		}
 
-	output <- translations
+		output <- translations
+	}
 }
