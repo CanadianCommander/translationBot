@@ -17,16 +17,16 @@ func TestApplyMappings(t *testing.T) {
 	inputs := []updateTranslationTestInput{
 		{
 			translations: []*translationFile.Translation{
-				translationFile.NewTranslation("create.me", "Create Me", []string{"french"}, map[string]string{}),
-				translationFile.NewTranslation("update.me", "Update Me", []string{"french"}, map[string]string{
+				translationFile.NewTranslation("create.me", "Create Me", "english", []string{"french"}, map[string]string{}),
+				translationFile.NewTranslation("update.me", "Update Me", "english", []string{"french"}, map[string]string{
 					"french": "not right",
 				}),
 			},
 			mappings: []translationFile.Translation{
-				*translationFile.NewTranslation("", "Create Me", []string{"french"}, map[string]string{
+				*translationFile.NewTranslation("", "Create Me", "english", []string{"french"}, map[string]string{
 					"french": "La Create Me",
 				}),
-				*translationFile.NewTranslation("", "Update Me", []string{"french"}, map[string]string{
+				*translationFile.NewTranslation("", "Update Me", "english", []string{"french"}, map[string]string{
 					"french": "La Update Me",
 				}),
 			},
@@ -43,23 +43,23 @@ func TestApplyMappings(t *testing.T) {
 		},
 		{
 			translations: []*translationFile.Translation{
-				translationFile.NewTranslation("create.me", "Create Me", []string{"french"}, map[string]string{}),
-				translationFile.NewTranslation("extra.lang", "Extra language", []string{"french", "spanish"}, map[string]string{
+				translationFile.NewTranslation("create.me", "Create Me", "english", []string{"french"}, map[string]string{}),
+				translationFile.NewTranslation("extra.lang", "Extra language", "english", []string{"french", "spanish"}, map[string]string{
 					"french": "La Extra",
 				}),
-				translationFile.NewTranslation("extra.lang.keep", "Extra language. Keep it", []string{"french", "spanish"}, map[string]string{
+				translationFile.NewTranslation("extra.lang.keep", "Extra language. Keep it", "english", []string{"french", "spanish"}, map[string]string{
 					"french":  "La Extra",
 					"spanish": "Don't change",
 				}),
-				translationFile.NewTranslation("dont.delete.me", "Keep Me", []string{"french"}, map[string]string{
+				translationFile.NewTranslation("dont.delete.me", "Keep Me", "english", []string{"french"}, map[string]string{
 					"french": "La Keep Me",
 				}),
 			},
 			mappings: []translationFile.Translation{
-				*translationFile.NewTranslation("", "Create Me", []string{"french"}, map[string]string{
+				*translationFile.NewTranslation("", "Create Me", "english", []string{"french"}, map[string]string{
 					"french": "La Create Me",
 				}),
-				*translationFile.NewTranslation("", "Extra language", []string{"french", "spanish"}, map[string]string{
+				*translationFile.NewTranslation("", "Extra language", "english", []string{"french", "spanish"}, map[string]string{
 					"spanish": "Est extra language",
 				}),
 			},

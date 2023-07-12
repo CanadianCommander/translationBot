@@ -26,4 +26,5 @@ var writers = []Writer{
 	&JsonWriter{},
 	&YamlWriter{},
 	&TsWriter{},
+	&PropertiesFileWriter{},
 }

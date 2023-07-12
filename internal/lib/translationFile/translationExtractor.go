@@ -54,6 +54,7 @@ func extractTranslations(
 						NewTranslation(
 							formatKeypath(keypath, key),
 							strings.Trim(val.(string), " "),
+							sourceLanguage,
 							translationLanguages,
 							make(map[string]string))
 				} else {
@@ -63,6 +64,7 @@ func extractTranslations(
 						NewTranslation(
 							formatKeypath(keypath, key),
 							"",
+							sourceLanguage,
 							translationLanguages,
 							translationMap)
 				}
@@ -143,6 +145,7 @@ func extractTranslationsMapSliceRecursive(
 						NewTranslationOrdered(
 							formatKeypath(keypath, item.Key.(string)),
 							strings.Trim(item.Value.(string), " "),
+							sourceLanguage,
 							translationLanguages,
 							make(map[string]string),
 							*order)
@@ -154,6 +157,7 @@ func extractTranslationsMapSliceRecursive(
 						NewTranslation(
 							formatKeypath(keypath, item.Key.(string)),
 							"",
+							sourceLanguage,
 							translationLanguages,
 							translationMap)
 				}
