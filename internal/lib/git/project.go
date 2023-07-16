@@ -23,10 +23,17 @@ type Project struct {
 	SourceLanguage string `yaml:"sourceLanguage"`
 	// if true TranslationBot will update the source language files in addition to the translation files.
 	UpdateSourceFile bool `yaml:"updateSourceFiles"`
-	// translation file mappings.
+
+	// translation "packs". array of one or more language packs.
+	// a pack is composed of translation file mappings.
 	// LANG: PATH
-	// Ex english: ./foo/bar/bang.yaml
-	TranslationFiles map[string]string `yaml:"translationFiles"`
+	// Ex
+	// packs:
+	//   - name: foo
+	//     translationFiles:
+	//       english: ./foo/bar/bang.yaml
+	// 	     french: ./foo/bar/la-bang.yaml
+	Packs []*LanguagePack `yaml:"packs"`
 
 	// used to make sure only one goroute operates on a project at a time. The project folder is a shared resource.
 	IsLocked    bool
@@ -61,13 +68,26 @@ func (project *Project) FilePath() string {
 	return path.Join(RepoStorageLocation, project.Name)
 }
 
+// TranslationFileCount counts the number of translation files in this project
+func (project *Project) TranslationFileCount() int {
+
+	numFiles := 0
+	for _, pack := range project.Packs {
+		numFiles += len(pack.TranslationFiles)
+	}
+
+	return numFiles
+}
+
 // TranslationLanguages returns the set of translation languages (all languages minus the source lang) for this project.
 func (project *Project) TranslationLanguages() []string {
 	var transLangs []string
 
-	for lang, _ := range project.TranslationFiles {
-		if lang != project.SourceLanguage {
-			transLangs = append(transLangs, lang)
+	for _, pack := range project.Packs {
+		for lang, _ := range pack.TranslationFiles {
+			if lang != project.SourceLanguage {
+				transLangs = append(transLangs, lang)
+			}
 		}
 	}
 

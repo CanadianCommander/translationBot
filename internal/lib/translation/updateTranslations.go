@@ -85,22 +85,24 @@ func updateTranslationFiles(project *git.Project, translations map[string]*trans
 	}
 
 	// update translation files
-	for lang, transFile := range project.TranslationFiles {
-		// if source file update disabled skip file
-		if !project.UpdateSourceFile && lang == project.SourceLanguage {
-			continue
-		}
-
-		writer := translationFile.GetWriterForFile(transFile)
-
-		if writer != nil {
-			err = writer.Write(project.ProjectRelativePathToAbsolute(transFile), lang, project.SourceLanguage, translations)
-			if err != nil {
-				return "", err
+	for _, pack := range project.Packs {
+		for lang, transFile := range pack.TranslationFiles {
+			// if source file update disabled skip file
+			if !project.UpdateSourceFile && lang == project.SourceLanguage {
+				continue
 			}
 
-		} else {
-			log.Logger.Errorf("Cannot  write translations to file %s. No writer matches", transFile)
+			writer := translationFile.GetWriterForFile(transFile)
+
+			if writer != nil {
+				err = writer.Write(project.ProjectRelativePathToAbsolute(transFile), lang, project.SourceLanguage, translations)
+				if err != nil {
+					return "", err
+				}
+
+			} else {
+				log.Logger.Errorf("Cannot  write translations to file %s. No writer matches", transFile)
+			}
 		}
 	}
 

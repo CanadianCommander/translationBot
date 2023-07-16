@@ -23,23 +23,26 @@ func LoadTranslations(project *git.Project) (map[string]*translationFile.Transla
 		return nil, err
 	}
 
-	translationOutputs := make(chan map[string]*translationFile.Translation, len(project.TranslationFiles))
-	errorOutputs := make(chan error, len(project.TranslationFiles))
+	translationOutputs := make(chan map[string]*translationFile.Translation, project.TranslationFileCount())
+	errorOutputs := make(chan error, project.TranslationFileCount())
 	workGroup := sync.WaitGroup{}
 
-	for lang, file := range project.TranslationFiles {
-		log.Logger.Infof("Loading translation file %s for project %s", file, project.Name)
-		workGroup.Add(1)
+	for _, pack := range project.Packs {
+		for lang, file := range pack.TranslationFiles {
+			log.Logger.Infof("Loading translation file %s for project %s", file, project.Name)
+			workGroup.Add(1)
 
-		go translationLoadRoutine(
-			project.ProjectRelativePathToAbsolute(file),
-			lang,
-			project.SourceLanguage,
-			project.TranslationLanguages(),
-			&workGroup,
-			translationOutputs,
-			errorOutputs,
-		)
+			go translationLoadRoutine(
+				pack,
+				project.ProjectRelativePathToAbsolute(file),
+				lang,
+				project.SourceLanguage,
+				project.TranslationLanguages(),
+				&workGroup,
+				translationOutputs,
+				errorOutputs,
+			)
+		}
 	}
 	workGroup.Wait()
 	close(errorOutputs)
@@ -100,6 +103,7 @@ func combineTranslations(translations []map[string]*translationFile.Translation)
 
 // translationLoadRoutine loads a translation file in a go routine
 // #### params
+// pack - language pack to load
 // file - file to load
 // lang - language to load
 // sourceLanguage - source language for the project
@@ -108,6 +112,7 @@ func combineTranslations(translations []map[string]*translationFile.Translation)
 // output - channel on which the loaded translations will be returned
 // errors - error channel
 func translationLoadRoutine(
+	pack *git.LanguagePack,
 	file string,
 	lang string,
 	sourceLang string,
