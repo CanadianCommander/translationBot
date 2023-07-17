@@ -2,10 +2,12 @@ package translationFile
 
 import (
 	_ "embed"
+	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"testing"
 )
 
 func TestTsLoader_CanLoad(t *testing.T) {
+	log.InitializeLogging()
 	tsLoader := TsLoader{}
 
 	if !tsLoader.CanLoad("foobar.ts") || !tsLoader.CanLoad("/var/lib/fiz.js") {
