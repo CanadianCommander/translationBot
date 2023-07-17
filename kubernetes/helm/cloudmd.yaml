@@ -13,32 +13,33 @@ projects:
     sourceLanguage: english
     updateSourceFiles: true
     preCommitAction: cd frontend-vue && yarn install && yarn run eslint --fix --ext .ts ./src/i18n/
-    translationFiles:
-      english: frontend-vue/src/i18n/en-US/index.ts
-      french: frontend-vue/src/i18n/fr-CA/index.ts
+    packs:
+      - name: frontend
+        translationFiles:
+          english: frontend-vue/src/i18n/en-US/index.ts
+          french: frontend-vue/src/i18n/fr-CA/index.ts`
+      - name: backend
+        translationFiles:
+          english: backend/lib/core/src/main/resources/locales_en.properties
+          french: backend/lib/core/src/main/resources/locales_fr.properties
     gitUsername: CloudMDServiceBot
     gitPassword: <override me>
 
-  snap-frontend:
+  snap:
     url: https://github.com/CloudMD-SSI/snapclarity.git
     branch: dev
     sourceLanguage: english
     updateSourceFiles: true
     preCommitAction: cd b2b-patient-onboarding && yarn install && yarn run eslint --fix --ext .js ./src/locales/
-    translationFiles:
-      english: b2b-patient-onboarding/src/locales/en.js
-      french: b2b-patient-onboarding/src/locales/fr-CA.js
-    gitUsername: CloudMDServiceBot
-    gitPassword: <override me>
-
-  snap-backend:
-    url: https://github.com/CloudMD-SSI/snapclarity.git
-    branch: dev
-    sourceLanguage: english
-    updateSourceFiles: true
-    translationFiles:
-      french: locales/fr-CA/translation.json
-      english: locales/en/translation.json
+    packs:
+      - name: frontend
+        translationFiles:
+          english: b2b-patient-onboarding/src/locales/en.js
+          french: b2b-patient-onboarding/src/locales/fr-CA.js
+      - name: backend
+        translationFiles:
+          french: locales/fr-CA/translation.json
+          english: locales/en/translation.json
     gitUsername: CloudMDServiceBot
     gitPassword: <override me>
 
@@ -47,8 +48,10 @@ projects:
     branch: dev
     sourceLanguage: english
     updateSourceFiles: true
-    translationFiles:
-      english: client/src/locales/en.json
-      french: client/src/locales/fr.json
+    packs:
+      - name: frontend
+        translationFiles:
+          english: client/src/locales/en.json
+          french: client/src/locales/fr.json
     gitUsername: CloudMDServiceBot
     gitPassword: <override me>
