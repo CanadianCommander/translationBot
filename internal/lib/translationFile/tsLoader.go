@@ -61,7 +61,6 @@ func (t TsLoader) Load(
 }
 
 func (t TsLoader) CanLoad(filePath string) bool {
-	log.Logger.Info(">>> TS LOADER. Checking if can load ", filePath, "...")
 	return path.Ext(filePath) == ".ts" || path.Ext(filePath) == ".js"
 }
 

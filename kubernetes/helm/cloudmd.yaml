@@ -17,7 +17,7 @@ projects:
       - name: frontend
         translationFiles:
           english: frontend-vue/src/i18n/en-US/index.ts
-          french: frontend-vue/src/i18n/fr-CA/index.ts`
+          french: frontend-vue/src/i18n/fr-CA/index.ts
       - name: backend
         translationFiles:
           english: backend/lib/core/src/main/resources/locales_en.properties
