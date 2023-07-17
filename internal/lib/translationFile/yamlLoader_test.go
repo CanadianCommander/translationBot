@@ -1,7 +1,9 @@
 package translationFile
 
 import (
+	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -12,6 +14,21 @@ func TestYamlLoader_Load(t *testing.T) {
 		t.Fatalf("Failed to create test input file %s", err.Error())
 	}
 	defer tmpFile.Close()
+
+	err = os.Chdir("/tmp/")
+	if err != nil {
+		t.Fatalf("Failed to change working directory %s", err.Error())
+	}
+
+	dummyPack := git.LanguagePack{
+		Name: "dummy",
+		TranslationFiles: map[string]string{
+			"english": filepath.Base(tmpFile.Name()),
+		},
+		Project: &git.Project{
+			BaseDir: "/",
+		},
+	}
 
 	written, err := tmpFile.Write([]byte("" +
 		"zip: zap\n" +
@@ -34,7 +51,7 @@ func TestYamlLoader_Load(t *testing.T) {
 		"english",
 		[]string{"english"},
 		"english",
-		tmpFile.Name(),
+		&dummyPack,
 		translations)
 	if err != nil {
 		t.Fatalf("Failed to load yaml translation file with error %s", err.Error())

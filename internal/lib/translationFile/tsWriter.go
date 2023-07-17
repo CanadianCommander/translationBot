@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"gopkg.in/yaml.v2"
 	"os"
@@ -18,12 +19,17 @@ import (
 type TsWriter struct {
 }
 
-func (tsWriter *TsWriter) Write(filePath string, lang string, sourceLanguage string, translations map[string]*Translation) error {
+func (tsWriter *TsWriter) Write(
+	pack *git.LanguagePack,
+	filePath string,
+	lang string,
+	sourceLanguage string,
+	translations map[string]*Translation) error {
 	if !tsWriter.CanWrite(filePath) {
 		return errors.New(fmt.Sprintf("translationFile.TsWriter does not support this type of file %s", filePath))
 	}
 
-	rawTranslations := translationsToMapSlice(lang, translations, lang == sourceLanguage)
+	rawTranslations := translationsToMapSlice(pack, lang, translations, lang == sourceLanguage)
 
 	yamlStr, err := yaml.Marshal(rawTranslations)
 	if err != nil {

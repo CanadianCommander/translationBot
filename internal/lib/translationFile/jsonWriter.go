@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"os"
 	"path"
@@ -16,12 +17,18 @@ import (
 type JsonWriter struct {
 }
 
-func (jsonWriter *JsonWriter) Write(filePath string, lang string, sourceLanguage string, translations map[string]*Translation) error {
+func (jsonWriter *JsonWriter) Write(
+	pack *git.LanguagePack,
+	filePath string,
+	lang string,
+	sourceLanguage string,
+	translations map[string]*Translation) error {
+
 	if !jsonWriter.CanWrite(filePath) {
 		return errors.New(fmt.Sprintf("translationFile.JsonWriter does not support this type of file %s", filePath))
 	}
 
-	rawTranslations := translationsToMap(lang, translations, lang == sourceLanguage)
+	rawTranslations := translationsToMap(pack, lang, translations, lang == sourceLanguage)
 
 	jsonStr, err := json.MarshalIndent(rawTranslations, "", "  ")
 	if err != nil {

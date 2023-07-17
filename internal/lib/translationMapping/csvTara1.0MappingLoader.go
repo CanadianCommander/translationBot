@@ -51,6 +51,7 @@ func (c *CsvTaraMappingLoader) Load(fileData io.Reader) ([]translationFile.Trans
 		mappings = append(
 			mappings,
 			*translationFile.NewTranslation(
+				nil,
 				"",
 				strings.Trim(mapping[0], " "),
 				headers[1],

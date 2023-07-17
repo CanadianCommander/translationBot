@@ -3,6 +3,7 @@ package translationFile
 import (
 	"errors"
 	"fmt"
+	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"golang.org/x/exp/maps"
 )
 
@@ -11,6 +12,7 @@ import (
 //==========================================================================
 
 type Translation struct {
+	Pack        *git.LanguagePack
 	Key         string
 	SourceValue string
 	SourceLang  string
@@ -26,12 +28,14 @@ type Translation struct {
 
 // NewTranslation creates a new translation object
 // #### params
+// pack - the language pack that this translation is part of
 // key - translation file key
 // sourceValue - the source value for this translation, usually the English version
 // sourceLang - the source language
 // supportedLangs - all languages supported (master lanaguage list)
 // translations... - one or translation mappings. lang -> translation
 func NewTranslation(
+	pack *git.LanguagePack,
 	key string,
 	sourceValue string,
 	sourceLang string,
@@ -39,6 +43,7 @@ func NewTranslation(
 	translations map[string]string) *Translation {
 
 	return &Translation{
+		Pack:         pack,
 		Key:          key,
 		SourceValue:  sourceValue,
 		SourceLang:   sourceLang,
@@ -57,13 +62,14 @@ func NewTranslation(
 // translations... - one or translation mappings. lang -> translation
 // order - the order of appearance of this translation in the source file.
 func NewTranslationOrdered(
+	pack *git.LanguagePack,
 	key string,
 	sourceValue string,
 	sourceLang string,
 	supportedLangs []string,
 	translations map[string]string,
 	order uint) *Translation {
-	trans := NewTranslation(key, sourceValue, sourceLang, supportedLangs, translations)
+	trans := NewTranslation(pack, key, sourceValue, sourceLang, supportedLangs, translations)
 	trans.SourceLangOrder = order
 
 	return trans

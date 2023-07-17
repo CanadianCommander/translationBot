@@ -51,6 +51,7 @@ func (c *CsvKeyedTaraMappingLoader) Load(fileData io.Reader) ([]translationFile.
 		mappings = append(
 			mappings,
 			*translationFile.NewTranslation(
+				nil,
 				strings.Trim(mapping[0], " "),
 				strings.Trim(mapping[1], " "),
 				headers[1],

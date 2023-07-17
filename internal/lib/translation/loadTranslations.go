@@ -34,7 +34,6 @@ func LoadTranslations(project *git.Project) (map[string]*translationFile.Transla
 
 			go translationLoadRoutine(
 				pack,
-				project.ProjectRelativePathToAbsolute(file),
 				lang,
 				project.SourceLanguage,
 				project.TranslationLanguages(),
@@ -104,7 +103,6 @@ func combineTranslations(translations []map[string]*translationFile.Translation)
 // translationLoadRoutine loads a translation file in a go routine
 // #### params
 // pack - language pack to load
-// file - file to load
 // lang - language to load
 // sourceLanguage - source language for the project
 // translationLanguages - list of all translated languages for the project.
@@ -113,7 +111,6 @@ func combineTranslations(translations []map[string]*translationFile.Translation)
 // errors - error channel
 func translationLoadRoutine(
 	pack *git.LanguagePack,
-	file string,
 	lang string,
 	sourceLang string,
 	translationLanguages []string,
@@ -123,6 +120,7 @@ func translationLoadRoutine(
 	defer workGroup.Done()
 	translations := make(map[string]*translationFile.Translation)
 
+	file := pack.Project.ProjectRelativePathToAbsolute(pack.TranslationFiles[lang])
 	loader := translationFile.GetLoaderForFile(file)
 	if loader == nil {
 		errChan <- errors.New("Could not find translation loader to handle file " + file)
@@ -132,7 +130,7 @@ func translationLoadRoutine(
 			sourceLang,
 			translationLanguages,
 			lang,
-			file,
+			pack,
 			translations)
 		if err != nil {
 			errChan <- err

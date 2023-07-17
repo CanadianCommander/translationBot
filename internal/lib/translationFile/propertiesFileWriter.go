@@ -2,6 +2,7 @@ package translationFile
 
 import (
 	"fmt"
+	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"golang.org/x/exp/maps"
 	"golang.org/x/exp/slices"
 	"os"
@@ -17,12 +18,22 @@ type PropertiesFileWriter struct {
 }
 
 func (propWriter *PropertiesFileWriter) Write(
+	pack *git.LanguagePack,
 	filePath string,
 	lang string,
 	sourceLanguage string,
 	translations map[string]*Translation) error {
 
 	translationsList := propWriter.sortTranslations(sourceLanguage == lang, translations)
+
+	// filter translations not part of the pack
+	filteredTranslations := make([]*Translation, 0, len(translationsList))
+	for _, trans := range translations {
+		if trans.Pack.Name == pack.Name {
+			filteredTranslations = append(filteredTranslations, trans)
+		}
+	}
+	translationsList = filteredTranslations
 
 	builder := strings.Builder{}
 

@@ -1,6 +1,7 @@
 package translationFile
 
 import (
+	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"gopkg.in/yaml.v2"
 	"os"
 	"path"
@@ -17,10 +18,10 @@ func (y *YamlLoader) Load(
 	sourceLanguage string,
 	translationLanguages []string,
 	language string,
-	file string,
+	pack *git.LanguagePack,
 	translations map[string]*Translation) (map[string]*Translation, error) {
 
-	yamlRaw, err := os.ReadFile(file)
+	yamlRaw, err := os.ReadFile(pack.Project.ProjectRelativePathToAbsolute(pack.TranslationFiles[language]))
 	if err != nil {
 		return nil, err
 	}
@@ -32,6 +33,7 @@ func (y *YamlLoader) Load(
 	}
 
 	extractTranslationsMapSlice(
+		pack,
 		sourceLanguage,
 		translationLanguages,
 		language,

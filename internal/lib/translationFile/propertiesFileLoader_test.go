@@ -2,7 +2,9 @@ package translationFile
 
 import (
 	"fmt"
+	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -13,6 +15,21 @@ func TestPropertiesFileLoader_Load(t *testing.T) {
 		t.Fatalf("Failed to create test input file %s", err.Error())
 	}
 	defer tmpFile.Close()
+
+	err = os.Chdir("/tmp/")
+	if err != nil {
+		t.Fatalf("Failed to change working directory %s", err.Error())
+	}
+
+	dummyPack := git.LanguagePack{
+		Name: "dummy",
+		TranslationFiles: map[string]string{
+			"english": filepath.Base(tmpFile.Name()),
+		},
+		Project: &git.Project{
+			BaseDir: "/",
+		},
+	}
 
 	written, err := tmpFile.Write([]byte("" +
 		"foo.bar.baz= flerp\n" +
@@ -33,7 +50,7 @@ func TestPropertiesFileLoader_Load(t *testing.T) {
 		"english",
 		[]string{"english"},
 		"english",
-		tmpFile.Name(),
+		&dummyPack,
 		translations)
 	if err != nil {
 		t.Fatalf("Failed to load properties translation file with error %s", err.Error())
@@ -42,10 +59,10 @@ func TestPropertiesFileLoader_Load(t *testing.T) {
 	if len(translations) != 3 {
 		t.Fatalf(fmt.Sprintf("Expected 3 translations got %d", len(translations)))
 	}
-	if translations["spaces"] == nil {
+	if translations["dummy.spaces"] == nil {
 		t.Fatalf("Spaces in path should be stripped")
 	}
-	if translations["blip"].SourceValue == " bazer=bing" {
+	if translations["dummy.blip"].SourceValue == " bazer=bing" {
 		t.Fatalf("Comments should be stripped")
 	}
 }

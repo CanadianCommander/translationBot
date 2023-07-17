@@ -1,9 +1,11 @@
 package configuration
 
 import (
+	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"gopkg.in/yaml.v2"
 	"os"
+	"path"
 )
 
 const configFilePath = "./config/config.yaml"
@@ -46,6 +48,11 @@ func loadSettings() *Settings {
 func postProcessProjectSettings(settings *Settings) *Settings {
 	for key, val := range settings.Projects {
 		val.Name = key
+		val.BaseDir = path.Join(git.RepoStorageLocation, val.Name)
+
+		for _, pack := range val.Packs {
+			pack.Project = val
+		}
 	}
 
 	return settings

@@ -1,6 +1,7 @@
 package git
 
 import (
+	"golang.org/x/exp/slices"
 	"os"
 	"path"
 	"sync"
@@ -12,6 +13,7 @@ import (
 
 type Project struct {
 	Name        string
+	BaseDir     string
 	Url         string
 	Branch      string
 	GitUsername string `yaml:"gitUsername"`
@@ -65,7 +67,7 @@ func (project *Project) Unlock() {
 //==========================================================================
 
 func (project *Project) FilePath() string {
-	return path.Join(RepoStorageLocation, project.Name)
+	return project.BaseDir
 }
 
 // TranslationFileCount counts the number of translation files in this project
@@ -85,7 +87,7 @@ func (project *Project) TranslationLanguages() []string {
 
 	for _, pack := range project.Packs {
 		for lang, _ := range pack.TranslationFiles {
-			if lang != project.SourceLanguage {
+			if lang != project.SourceLanguage && !slices.Contains(transLangs, lang) {
 				transLangs = append(transLangs, lang)
 			}
 		}

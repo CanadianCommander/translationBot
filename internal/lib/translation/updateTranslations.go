@@ -95,7 +95,8 @@ func updateTranslationFiles(project *git.Project, translations map[string]*trans
 			writer := translationFile.GetWriterForFile(transFile)
 
 			if writer != nil {
-				err = writer.Write(project.ProjectRelativePathToAbsolute(transFile), lang, project.SourceLanguage, translations)
+				log.Logger.Infof("Writing translations to file %s", transFile)
+				err = writer.Write(pack, project.ProjectRelativePathToAbsolute(transFile), lang, project.SourceLanguage, translations)
 				if err != nil {
 					return "", err
 				}
@@ -127,12 +128,12 @@ func applyMappings(translations []*translationFile.Translation, mappings []trans
 
 	for _, translation := range translations {
 		mapping, exists := mappingKeyMap[translation.Key]
-		if exists {
+		if exists && (mapping.Pack == nil || mapping.Pack.Name == translation.Pack.Name) {
 			translation.SourceValue = mapping.SourceValue
 			mergeTranslationsWithMappings(translation, mapping)
 		} else {
 			mapping, exists = mappingValueMap[translation.SourceValue]
-			if exists {
+			if exists && (mapping.Pack == nil || mapping.Pack.Name == translation.Pack.Name) {
 				mergeTranslationsWithMappings(translation, mapping)
 			}
 		}

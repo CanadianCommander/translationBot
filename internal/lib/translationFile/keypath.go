@@ -2,6 +2,7 @@ package translationFile
 
 import (
 	"fmt"
+	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"strings"
 )
 
@@ -31,4 +32,9 @@ func splitKeypath(keypath string) []string {
 	}
 
 	return pathParts
+}
+
+// stripPackNameFromKeypath removes the pack name from the keypath
+func stripPackNameFromKeypath(pack *git.LanguagePack, keypath string) string {
+	return strings.TrimPrefix(keypath, pack.Name+".")
 }

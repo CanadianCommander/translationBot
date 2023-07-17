@@ -2,6 +2,7 @@ package translationFile
 
 import (
 	"encoding/json"
+	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"os"
 	"path"
 )
@@ -17,10 +18,10 @@ func (j *JsonLoader) Load(
 	sourceLanguage string,
 	translationLanguages []string,
 	language string,
-	file string,
+	pack *git.LanguagePack,
 	translations map[string]*Translation,
 ) (map[string]*Translation, error) {
-	rawJson, err := os.ReadFile(file)
+	rawJson, err := os.ReadFile(pack.Project.ProjectRelativePathToAbsolute(pack.TranslationFiles[language]))
 	if err != nil {
 		return nil, err
 	}
@@ -31,7 +32,7 @@ func (j *JsonLoader) Load(
 		return nil, err
 	}
 
-	extractTranslations(sourceLanguage, translationLanguages, language, "", jsonData, translations)
+	extractTranslations(pack, sourceLanguage, translationLanguages, language, "", jsonData, translations)
 	return translations, nil
 }
 

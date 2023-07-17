@@ -1,6 +1,7 @@
 package translationFile
 
 import (
+	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"golang.org/x/exp/maps"
 	"sort"
 	"strings"
@@ -12,12 +13,17 @@ import (
 
 // translationsToMap creates a raw map (JSON like) structure out of the given translations for the given language
 // #### params
+// pack - the language pack that translations should be mapped for
 // lang - the language to extract
 // translationMap - the translation data to convert
 // isSourceLang - if true lang will be treated as the source lang. Different extraction logic will apply.
 // #### return
 // a map containing a JSON like representation of the data. Each value will be either string or map[string]interface{}
-func translationsToMap(lang string, translationMap map[string]*Translation, isSourceLang bool) map[string]interface{} {
+func translationsToMap(
+	pack *git.LanguagePack,
+	lang string,
+	translationMap map[string]*Translation,
+	isSourceLang bool) map[string]interface{} {
 
 	output := make(map[string]interface{})
 	translations := maps.Values(translationMap)
@@ -30,6 +36,11 @@ func translationsToMap(lang string, translationMap map[string]*Translation, isSo
 	for _, translation := range translations {
 		pathParts := translation.PathParts()
 		currentPosition := output
+
+		// skip any translations not part of the pack
+		if translation.Pack.Name != pack.Name {
+			continue
+		}
 
 		for i, part := range pathParts {
 			if i == len(pathParts)-1 {

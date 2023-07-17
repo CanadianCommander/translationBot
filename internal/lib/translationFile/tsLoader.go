@@ -2,6 +2,7 @@ package translationFile
 
 import (
 	"bytes"
+	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
@@ -21,8 +22,9 @@ func (t TsLoader) Load(
 	sourceLanguage string,
 	translationLanguages []string,
 	language string,
-	file string,
+	pack *git.LanguagePack,
 	translations map[string]*Translation) (map[string]*Translation, error) {
+	file := pack.Project.ProjectRelativePathToAbsolute(pack.TranslationFiles[language])
 
 	if t.shouldInjectTemporaryPackage(file) {
 		log.Logger.Info("Creating temporary package environment to switch code to ESM module...")
@@ -53,7 +55,7 @@ func (t TsLoader) Load(
 		return nil, err
 	}
 
-	extractTranslationsMapSlice(sourceLanguage, translationLanguages, language, "", yamlData, translations)
+	extractTranslationsMapSlice(pack, sourceLanguage, translationLanguages, language, "", yamlData, translations)
 
 	return translations, nil
 }

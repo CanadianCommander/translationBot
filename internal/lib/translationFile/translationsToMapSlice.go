@@ -1,6 +1,7 @@
 package translationFile
 
 import (
+	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"golang.org/x/exp/maps"
 	"golang.org/x/exp/slices"
 	"gopkg.in/yaml.v2"
@@ -14,14 +15,28 @@ import (
 
 // translationsToMap creates a raw map (JSON like) structure out of the given translations for the given language
 // #### params
+// pack - the language pack that translations should be mapped for
 // lang - the language to extract
 // translationMap - the translation data to convert
 // isSourceLang - if true lang will be treated as the source lang. Different extraction logic will apply.
 // #### return
 // a map containing a JSON like representation of the data. Each value will be either string or map[string]interface{}
-func translationsToMapSlice(lang string, translationMap map[string]*Translation, isSourceLang bool) yaml.MapSlice {
+func translationsToMapSlice(
+	pack *git.LanguagePack,
+	lang string,
+	translationMap map[string]*Translation,
+	isSourceLang bool) yaml.MapSlice {
 
 	translations := maps.Values(translationMap)
+
+	// filter translations not part of the pack
+	filteredTranslations := make([]*Translation, 0, len(translations))
+	for _, trans := range translations {
+		if trans.Pack.Name == pack.Name {
+			filteredTranslations = append(filteredTranslations, trans)
+		}
+	}
+	translations = filteredTranslations
 
 	if isSourceLang {
 		// sort by order of appearance in original file

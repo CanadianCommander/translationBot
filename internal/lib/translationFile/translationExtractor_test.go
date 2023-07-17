@@ -1,6 +1,7 @@
 package translationFile
 
 import (
+	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"gopkg.in/yaml.v2"
 	"testing"
 )
@@ -13,6 +14,17 @@ type extractorTestInput struct {
 
 func TestExtractTranslations(t *testing.T) {
 
+	packDummy := git.LanguagePack{ // dummy pack
+		Name: "dummy",
+		Project: &git.Project{
+			Name: "dummy",
+		},
+		TranslationFiles: map[string]string{
+			"en": "en.json",
+			"fr": "fr.json",
+		},
+	}
+
 	inputs := []extractorTestInput{
 		{
 			rawStructInput: map[string]interface{}{
@@ -20,8 +32,8 @@ func TestExtractTranslations(t *testing.T) {
 				"police": "Frank Drebin",
 			},
 			resultOk: func(tm map[string]*Translation) bool {
-				return tm["card"].SourceValue == "This is a card or something" &&
-					tm["police"].SourceValue == "Frank Drebin"
+				return tm["dummy.card"].SourceValue == "This is a card or something" &&
+					tm["dummy.police"].SourceValue == "Frank Drebin"
 			},
 		},
 		{
@@ -32,8 +44,8 @@ func TestExtractTranslations(t *testing.T) {
 				},
 			},
 			resultOk: func(tm map[string]*Translation) bool {
-				return tm["card"].SourceValue == "This is a card or something" &&
-					tm["nested.bob"].SourceValue == "Ross"
+				return tm["dummy.card"].SourceValue == "This is a card or something" &&
+					tm["dummy.nested.bob"].SourceValue == "Ross"
 			},
 		},
 		{
@@ -56,12 +68,12 @@ func TestExtractTranslations(t *testing.T) {
 				},
 			},
 			resultOk: func(tm map[string]*Translation) bool {
-				return tm["card"].SourceValue == "This is a card or something" &&
-					tm["card"].Translations["french"] == "La This is a card or something" &&
-					tm["nested.bob"].SourceValue == "Ross" &&
-					tm["nested.bob"].Translations["french"] == "La Ross" &&
-					tm["nested.deeper.go"].SourceValue == "deeper" &&
-					tm["nested.deeper.go"].Translations["french"] == "La deeper"
+				return tm["dummy.card"].SourceValue == "This is a card or something" &&
+					tm["dummy.card"].Translations["french"] == "La This is a card or something" &&
+					tm["dummy.nested.bob"].SourceValue == "Ross" &&
+					tm["dummy.nested.bob"].Translations["french"] == "La Ross" &&
+					tm["dummy.nested.deeper.go"].SourceValue == "deeper" &&
+					tm["dummy.nested.deeper.go"].Translations["french"] == "La deeper"
 			},
 		},
 	}
@@ -72,6 +84,7 @@ func TestExtractTranslations(t *testing.T) {
 		if input.rawStructInputFrench != nil {
 			// reverse loading has been an issue. Load French first to test for this edge case.
 			extractTranslations(
+				&packDummy,
 				"english",
 				[]string{"french"},
 				"french",
@@ -81,6 +94,7 @@ func TestExtractTranslations(t *testing.T) {
 		}
 
 		extractTranslations(
+			&packDummy,
 			"english",
 			[]string{"french"},
 			"english",
@@ -102,6 +116,17 @@ type extractorMapSliceTestInput struct {
 
 func TestExtractTranslationsMapSlice(t *testing.T) {
 
+	packDummy := git.LanguagePack{ // dummy pack
+		Name: "dummy",
+		Project: &git.Project{
+			Name: "dummy",
+		},
+		TranslationFiles: map[string]string{
+			"en": "en.json",
+			"fr": "fr.json",
+		},
+	}
+
 	inputs := []extractorMapSliceTestInput{
 		{
 			rawStructInput: yaml.MapSlice{
@@ -117,8 +142,8 @@ func TestExtractTranslationsMapSlice(t *testing.T) {
 				},
 			},
 			resultOk: func(tm map[string]*Translation) bool {
-				return tm["foo"].SourceValue == "bar" &&
-					tm["foo"].Translations["french"] == "la bar"
+				return tm["dummy.foo"].SourceValue == "bar" &&
+					tm["dummy.foo"].Translations["french"] == "la bar"
 			},
 		},
 		{
@@ -165,12 +190,12 @@ func TestExtractTranslationsMapSlice(t *testing.T) {
 				},
 			},
 			resultOk: func(tm map[string]*Translation) bool {
-				return tm["z"].SourceLangOrder == 0 &&
-					tm["a"].SourceLangOrder == 1 &&
-					tm["b.g"].SourceLangOrder == 2 &&
-					tm["b.a"].SourceLangOrder == 3 &&
-					tm["g.z"].SourceLangOrder == 4 &&
-					tm["g.x"].SourceLangOrder == 5
+				return tm["dummy.z"].SourceLangOrder == 0 &&
+					tm["dummy.a"].SourceLangOrder == 1 &&
+					tm["dummy.b.g"].SourceLangOrder == 2 &&
+					tm["dummy.b.a"].SourceLangOrder == 3 &&
+					tm["dummy.g.z"].SourceLangOrder == 4 &&
+					tm["dummy.g.x"].SourceLangOrder == 5
 			},
 		},
 	}
@@ -181,6 +206,7 @@ func TestExtractTranslationsMapSlice(t *testing.T) {
 		if input.rawStructInputFrench != nil {
 			// reverse loading has been an issue. Load French first to test for this edge case.
 			extractTranslationsMapSlice(
+				&packDummy,
 				"english",
 				[]string{"french"},
 				"french",
@@ -190,6 +216,7 @@ func TestExtractTranslationsMapSlice(t *testing.T) {
 		}
 
 		extractTranslationsMapSlice(
+			&packDummy,
 			"english",
 			[]string{"french"},
 			"english",

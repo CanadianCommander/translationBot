@@ -1,0 +1,5 @@
+*Features:*
+```
+- "Multi Pack" feature. TranslationBot is no longer limited to 1 set of translation files per project. This allows you to have both backend and frontend translation files in the same project. Or any number of other combinations. When interacting with a project containing multiple language packages the user see's no difference. In the future there will be a new CSV format with a PACK column to allow you to specific which language package you want to update. This is handy when there are ambiguous keys in multiple language packages.
+- Java Resource Bundle files are now supported. All features of TranslationBot work with Java Resource Bundle files.
+```

@@ -3,6 +3,7 @@ package translationFile
 import (
 	"errors"
 	"fmt"
+	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"golang.org/x/exp/slices"
 	"gopkg.in/yaml.v2"
 	"os"
@@ -23,7 +24,7 @@ type PropertiesFileLoader struct {
 // sourceLanguage - the source language from which translations are derived
 // translationLanguages - the languages that can be derived from the sourceLanguage
 // language - language of the translation data
-// file - path to file containing translation data
+// pack - the language pack to load the translation data from
 // translations - [optional] if provided translations will be added to the specified slice
 // #### return
 // a map of keypath: translation pairs. where keypath is the JSON path to the translation. ex. page.home.title
@@ -31,10 +32,10 @@ func (pLoader *PropertiesFileLoader) Load(
 	sourceLanguage string,
 	translationLanguages []string,
 	language string,
-	file string,
+	pack *git.LanguagePack,
 	translations map[string]*Translation) (map[string]*Translation, error) {
 
-	fileData, err := os.ReadFile(file)
+	fileData, err := os.ReadFile(pack.Project.ProjectRelativePathToAbsolute(pack.TranslationFiles[language]))
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +45,7 @@ func (pLoader *PropertiesFileLoader) Load(
 		return nil, err
 	}
 
-	extractTranslationsMapSlice(sourceLanguage, translationLanguages, language, "", parsedProperties, translations)
+	extractTranslationsMapSlice(pack, sourceLanguage, translationLanguages, language, "", parsedProperties, translations)
 	return translations, nil
 }
 

@@ -1,5 +1,7 @@
 package translationFile
 
+import "github.com/CanadianCommander/translationBot/internal/lib/git"
+
 //==========================================================================
 // Public
 //==========================================================================
@@ -17,7 +19,7 @@ type Loader interface {
 	Load(sourceLanguage string,
 		translationLanguages []string,
 		language string,
-		file string,
+		pack *git.LanguagePack,
 		translations map[string]*Translation,
 	) (map[string]*Translation, error)
 
