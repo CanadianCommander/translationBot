@@ -1,6 +1,9 @@
 package translationFile
 
-import "testing"
+import (
+	"github.com/CanadianCommander/translationBot/internal/lib/git"
+	"testing"
+)
 
 type mapperTestInput struct {
 	translations map[string]*Translation
@@ -10,11 +13,16 @@ type mapperTestInput struct {
 
 func TestTranslationsToMap(t *testing.T) {
 
+	dummyPack := git.LanguagePack{
+		Name: "dummy",
+	}
+
 	inputs := []mapperTestInput{
 		{
 			translations: map[string]*Translation{
 				"foo": {
 					Key:         "foo",
+					Pack:        &dummyPack,
 					SourceValue: "Bar",
 					Translations: map[string]string{
 						"french": "La Bar",
@@ -23,6 +31,7 @@ func TestTranslationsToMap(t *testing.T) {
 				},
 				"bing.bang.boom": {
 					Key:         "bing.bang.boom",
+					Pack:        &dummyPack,
 					SourceValue: "Bop",
 					Translations: map[string]string{
 						"french": "La Bop",
@@ -52,10 +61,10 @@ func TestTranslationsToMap(t *testing.T) {
 	}
 
 	for i, input := range inputs {
-		if !input.englishOk(translationsToMap("english", input.translations, true)) {
+		if !input.englishOk(translationsToMap(&dummyPack, "english", input.translations, true)) {
 			t.Fatalf("Failed to transform translations in to map of english for input %d", i)
 		}
-		if !input.frenchOk(translationsToMap("french", input.translations, false)) {
+		if !input.frenchOk(translationsToMap(&dummyPack, "french", input.translations, false)) {
 			t.Fatalf("Failed to transform translations in to map of french for input %d", i)
 		}
 	}

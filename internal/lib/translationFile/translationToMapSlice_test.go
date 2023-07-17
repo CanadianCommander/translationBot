@@ -1,6 +1,7 @@
 package translationFile
 
 import (
+	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"golang.org/x/exp/slices"
 	"gopkg.in/yaml.v2"
 	"testing"
@@ -14,11 +15,16 @@ type TranslationsToMapSliceTestInput struct {
 
 func TestTranslationsToMapSlice(t *testing.T) {
 
+	dummyPack := git.LanguagePack{
+		Name: "dummy",
+	}
+
 	inputs := []TranslationsToMapSliceTestInput{
 		{
 			translations: map[string]*Translation{
 				"foo": {
 					Key:         "foo",
+					Pack:        &dummyPack,
 					SourceValue: "Bar",
 					Translations: map[string]string{
 						"french": "La Bar",
@@ -27,6 +33,7 @@ func TestTranslationsToMapSlice(t *testing.T) {
 				},
 				"bing.bang.boom": {
 					Key:         "bing.bang.boom",
+					Pack:        &dummyPack,
 					SourceValue: "Bop",
 					Translations: map[string]string{
 						"french": "La Bop",
@@ -62,6 +69,7 @@ func TestTranslationsToMapSlice(t *testing.T) {
 			translations: map[string]*Translation{
 				"bing.bang.bap": {
 					Key:         "bing.bang.bap",
+					Pack:        &dummyPack,
 					SourceValue: "Zip",
 					Translations: map[string]string{
 						"french": "La Zip",
@@ -70,6 +78,7 @@ func TestTranslationsToMapSlice(t *testing.T) {
 				},
 				"bing.bang.boom": {
 					Key:         "bing.bang.boom",
+					Pack:        &dummyPack,
 					SourceValue: "Bop",
 					Translations: map[string]string{
 						"french": "La Bop",
@@ -85,10 +94,10 @@ func TestTranslationsToMapSlice(t *testing.T) {
 	}
 
 	for i, input := range inputs {
-		if !input.englishOk(translationsToMapSlice("english", input.translations, true)) {
+		if !input.englishOk(translationsToMapSlice(&dummyPack, "english", input.translations, true)) {
 			t.Fatalf("Failed to transform translations in to map of english for input %d", i)
 		}
-		if !input.frenchOk(translationsToMapSlice("french", input.translations, false)) {
+		if !input.frenchOk(translationsToMapSlice(&dummyPack, "french", input.translations, false)) {
 			t.Fatalf("Failed to transform translations in to map of french for input %d", i)
 		}
 	}
