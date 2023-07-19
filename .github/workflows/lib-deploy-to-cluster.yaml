@@ -66,5 +66,6 @@ jobs:
           --set secrets.slackClientSecret=${{ secrets.SLACK_CLIENT_SECRET }} \
           --set projects.kii.gitPassword=${{ secrets.GIT_PASSWORD }} \
           --set projects.snap.gitPassword=${{ secrets.GIT_PASSWORD }} \
+          --set projects.keycloak.gitPassword=${{ secrets.GIT_PASSWORD }} \
           --set projects.myhealthaccess.gitPassword=${{ secrets.GIT_PASSWORD }} \
           tb ./kubernetes/helm/

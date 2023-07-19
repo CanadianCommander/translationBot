@@ -25,6 +25,23 @@ projects:
     gitUsername: CloudMDServiceBot
     gitPassword: <override me>
 
+  keycloak:
+    url: https://github.com/CloudMD-SSI/fusion-keycloak.git
+    branch: main
+    sourceLanguage: english
+    updateSourceFiles: true
+    packs:
+      - name: CloudMD Theme Email
+        translationFiles:
+          english: themes/cloudmd/email/messages/messages_en.properties
+          french: themes/cloudmd/email/messages/messages_fr.properties
+      - name: CloudMD Theme Login
+        translationFiles:
+          english: themes/cloudmd/login/messages/messages_en.properties
+          french: themes/cloudmd/login/messages/messages_en.properties
+    gitUsername: CloudMDServiceBot
+    gitPassword: <override me>
+
   snap:
     url: https://github.com/CloudMD-SSI/snapclarity.git
     branch: dev
