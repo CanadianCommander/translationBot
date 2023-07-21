@@ -38,7 +38,7 @@ projects:
       - name: CloudMD Theme Login
         translationFiles:
           english: themes/cloudmd/login/messages/messages_en.properties
-          french: themes/cloudmd/login/messages/messages_en.properties
+          french: themes/cloudmd/login/messages/messages_fr.properties
     gitUsername: CloudMDServiceBot
     gitPassword: <override me>
 
