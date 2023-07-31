@@ -16,6 +16,10 @@ import (
 // Public
 //==========================================================================
 
+const (
+	StringNodePlaceholder = "TBStrNode"
+)
+
 type PropertiesFileLoader struct {
 }
 
@@ -74,7 +78,8 @@ func (pLoader *PropertiesFileLoader) parsePropertiesFile(fileData []byte) (yaml.
 		}
 
 		pathSegments := strings.Split(string(matches[1]), ".")
-		output = pLoader.parsePropertiesRecursive(output, pathSegments, string(matches[2]))
+		value := strings.Trim(string(matches[2]), " ")
+		output = pLoader.parsePropertiesRecursive(output, pathSegments, value)
 	}
 
 	return output, nil
@@ -98,8 +103,17 @@ func (pLoader *PropertiesFileLoader) parsePropertiesRecursive(
 		if existingMapIndex == -1 {
 			return append(root, yaml.MapItem{Key: currSegment, Value: pLoader.parsePropertiesRecursive(make(yaml.MapSlice, 0), segments[1:], value)})
 		} else {
+
+			switch root[existingMapIndex].Value.(type) {
+			case string:
+				root[existingMapIndex].Value = yaml.MapSlice([]yaml.MapItem{
+					yaml.MapItem{Key: StringNodePlaceholder, Value: root[existingMapIndex].Value.(string)},
+				})
+			}
+
 			root[existingMapIndex].Value =
 				pLoader.parsePropertiesRecursive(root[existingMapIndex].Value.(yaml.MapSlice), segments[1:], value)
+
 			return root
 		}
 	}

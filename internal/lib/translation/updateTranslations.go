@@ -1,6 +1,7 @@
 package translation
 
 import (
+	"fmt"
 	"github.com/CanadianCommander/translationBot/internal/lib/configuration"
 	"github.com/CanadianCommander/translationBot/internal/lib/git"
 	"github.com/CanadianCommander/translationBot/internal/lib/log"
@@ -8,6 +9,7 @@ import (
 	"github.com/CanadianCommander/translationBot/internal/lib/translationFile"
 	"github.com/CanadianCommander/translationBot/internal/lib/translationMapping"
 	"golang.org/x/exp/maps"
+	"strings"
 )
 
 //==========================================================================
@@ -127,7 +129,7 @@ func applyMappings(translations []*translationFile.Translation, mappings []trans
 	mappingValueMap := buildMappingValueMap(mappings)
 
 	for _, translation := range translations {
-		mapping, exists := mappingKeyMap[translation.Key]
+		mapping, exists := mappingKeyMap[strings.ReplaceAll(translation.Key, fmt.Sprintf(".%s", translationFile.StringNodePlaceholder), "")]
 		if exists && (mapping.Pack == nil || mapping.Pack.Name == translation.Pack.Name) {
 			translation.SourceValue = mapping.SourceValue
 			mergeTranslationsWithMappings(translation, mapping)

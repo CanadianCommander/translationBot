@@ -40,7 +40,10 @@ func (propWriter *PropertiesFileWriter) Write(
 	for _, translation := range translationsList {
 		langString, exists := translation.GetString(lang)
 		if exists {
-			builder.WriteString(fmt.Sprintf("%s=%s\n", translation.Key, langString))
+			builder.WriteString(fmt.Sprintf(
+				"%s=%s\n",
+				strings.ReplaceAll(translation.Key, fmt.Sprintf(".%s", StringNodePlaceholder), ""),
+				langString))
 		}
 	}
 
