@@ -29,7 +29,19 @@ translation magic, traduction magique, traducción mágica, .....
  ```
 
 This format is not appropriate when one source string gos to multiple different strings in other languages.
-To handle this you will have to use the following format (TODO)
+To handle this you will have to use the following format
+
+*CSV_Keyed_Tara_1.0*
+
+This format is just like the CSV_Tara_1.0 format except, that the first column is `KEY`. This `KEY` is used to
+disambiguate multiple source strings that map to the same string in another language. See the following example.
+```csv
+KEY, ENGLISH, FRENCH, SPANISH, ANOTHER_LANGUAGE...
+login.title, Hello World, Bonjour le monde, Hola Mundo, .....
+login.title.about, translation magic, traduction magique, traducción mágica, .....
+.....
+```
+This is the preferred way of uploading translation files, as it reduces the chance of the wrong string getting updated. 
 
 
 ### Getting Started (Dev)
